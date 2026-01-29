@@ -1,0 +1,37 @@
+## PROJECT: "Zigzag" single-page website using Tailwind CSS.
+
+## ACTION:
+Generate the complete HTML file (`index.html`) for a minimalist and fun landing page.
+
+## STRUCTURE & CONTENT:
+
+1.  **BODY:**
+    -   Use a very subtle background gradient: `bg-gradient-to-br from-cyan-50 via-white to-pink-50`.
+    -   Make it a flex container to center everything: `flex flex-col items-center justify-center min-h-screen text-gray-800 font-sans`.
+
+2.  **HEADER (inside the body):**
+    -   An `<img>` tag for the logo. **Important: Use `logo.png` as the source.**
+    -   Give it a class for sizing: `class="w-48 mb-8"`.
+
+3.  **MAIN CONTENT (inside the body):**
+    -   **Headline (H1):** `Lancez un message. Découvrez le chaos.`
+        -   Use Tailwind classes for styling: `class="text-4xl md:text-5xl font-bold text-center mb-8"`.
+    -   **Visual Comparison (div):**
+        -   Make it a flex container: `class="flex items-center justify-center gap-4 md:gap-8 mb-8"`.
+        -   **Left Card (div):** `class="bg-white rounded-xl shadow-lg p-6 w-48 text-center"`.
+            -   Inside, add a `div` with `class="text-cyan-500 font-bold mb-2"` containing "DÉPART".
+            -   Then, a `p` tag with "Un astronaute mangeant une pizza".
+        -   **Arrow (div):** A simple zigzag arrow svg or `<span>` with `class="text-3xl text-orange-400 font-bold"` containing `~>`.
+        -   **Right Card (div):** `class="bg-white rounded-xl shadow-lg p-6 w-48 text-center"`.
+            -   Inside, add a `div` with `class="text-pink-500 font-bold mb-2"` containing "RÉSULTAT FINAL".
+            -   Then, an `<img>` tag for the result. Use this placeholder URL for now: `https://placehold.co/100x100/E94560/FFFFFF?text=ART:D`.
+    -   **Subheading (p):** `Dessinez, écrivez, parlez. Regardez votre idée se transformer à travers le monde.`
+        -   Use Tailwind classes: `class="text-lg text-gray-600 text-center mb-10"`.
+
+4.  **CALL TO ACTION (inside the body):**
+    -   A button `<a>` tag: `class="bg-orange-500 text-white font-bold py-4 px-8 rounded-full text-xl hover:bg-orange-600 transition-transform hover:scale-110 shadow-lg"`.
+    -   Button text: `⚡ Lancer une partie !`
+
+5.  **FOOTER (inside the body):**
+    -   A `div` with `class="absolute bottom-4 text-gray-500"`.
+    -   Inside, put a simple link `<a>` for "Mentions Légales".

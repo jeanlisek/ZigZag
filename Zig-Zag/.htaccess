@@ -1,0 +1,174 @@
+RewriteEngine On
+
+# ============================================
+# REDIRECTION /jeu vers game.zig-zag.fun
+# PRIORITÉ : Doit être AVANT les autres règles de réécriture
+# ============================================
+RewriteRule ^jeu/?$ https://game.zig-zag.fun [R=302,L]
+
+# ============================================
+# DASHBOARD ADMIN - Serveur React
+# PRIORITÉ : Avant les autres règles de réécriture
+# ============================================
+# Note: admin.html a été archivé, toutes les requêtes /admin servent le nouveau dashboard React
+
+# Ne pas appliquer les règles suivantes aux fichiers statiques (assets, images, etc.)
+RewriteCond %{REQUEST_URI} ^/admin/assets/ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/admin/vite\.svg$ [NC]
+RewriteRule ^ - [L]
+
+# Servir les fichiers statiques du dashboard depuis admin/
+# Vérifier d'abord si le fichier existe dans admin/
+RewriteCond %{REQUEST_URI} ^/admin/(.+)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}/admin/%1 -f
+RewriteRule ^admin/(.+)$ admin/$1 [L]
+
+# Pour toutes les autres requêtes /admin (y compris /admin/), servir index.html (routing React)
+RewriteCond %{REQUEST_URI} ^/admin(/.*)?$ [NC]
+RewriteRule ^admin(/.*)?$ admin/index.html [L]
+
+# ============================================
+# TYPES MIME - CORRIGER LES ERREURS MIME TYPE
+# PRIORITÉ ABSOLUE : Doit être AVANT les autres règles
+# ============================================
+<IfModule mod_mime.c>
+    # JavaScript - CRITIQUE pour Next.js
+    AddType application/javascript .js
+    AddType application/javascript .mjs
+    AddType text/javascript .js
+    
+    # CSS - CRITIQUE pour Next.js
+    AddType text/css .css
+    
+    # JSON
+    AddType application/json .json
+    
+    # Fonts
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    
+    # Images
+    AddType image/svg+xml .svg
+    AddType image/png .png
+    AddType image/jpeg .jpg .jpeg
+    AddType image/gif .gif
+    AddType image/webp .webp
+    AddType image/avif .avif
+    
+    # Autres
+    AddType text/html .html
+    AddType text/plain .txt
+    AddType application/xml .xml
+</IfModule>
+
+# ============================================
+# HEADERS POUR FORCER LES TYPES MIME
+# CRITIQUE : Force les bons types MIME même si le serveur les ignore
+# ============================================
+<IfModule mod_headers.c>
+    # Forcer le bon type MIME pour les fichiers JS (y compris dans _next/)
+    <FilesMatch "\.js$">
+        Header set Content-Type "application/javascript; charset=utf-8"
+    </FilesMatch>
+    
+    # Forcer le bon type MIME pour les fichiers CSS (y compris dans _next/)
+    <FilesMatch "\.css$">
+        Header set Content-Type "text/css; charset=utf-8"
+    </FilesMatch>
+    
+    # Service Worker doit être servi avec le bon Content-Type
+    <FilesMatch "sw\.js$">
+        Header set Content-Type "application/javascript; charset=utf-8"
+        Header set Service-Worker-Allowed "/"
+    </FilesMatch>
+    
+    # Manifest doit être accessible
+    <FilesMatch "manifest\.json$">
+        Header set Content-Type "application/manifest+json; charset=utf-8"
+    </FilesMatch>
+</IfModule>
+
+# Redirection permanente des URLs avec .html vers URLs propres (SEO)
+# Exemple: /contact.html -> /contact
+# Note: /admin.html est géré par les règles admin ci-dessus
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteCond %1 !^admin$ [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Redirection de index.html vers la racine
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^ / [R=301,L]
+
+# Ne pas réécrire les fichiers existants (images, CSS, JS, etc.)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Ne pas réécrire les dossiers existants
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Réécriture interne : URLs sans extension vers fichiers .html
+# Exemple: /contact -> /contact.html (en interne, URL reste /contact)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Gérer /oauth-callback (sans extension)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/oauth-callback/?$
+RewriteRule ^oauth-callback/?$ oauth-callback.html [L]
+
+# Gérer la page d'accueil : / -> index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ index.html [L]
+
+# Compression GZIP pour améliorer les performances
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/x-javascript text/js
+    # Compression spécifique pour les assets du dashboard
+    <LocationMatch "^/admin/assets/">
+        SetOutputFilter DEFLATE
+    </LocationMatch>
+</IfModule>
+
+# Cache des fichiers statiques
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/manifest+json "access plus 1 week"
+    ExpiresByType text/cache-manifest "access plus 0 seconds"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# Headers de cache pour les assets du dashboard
+<IfModule mod_headers.c>
+    # Cache long pour les assets (JS, CSS) avec hash dans le nom
+    <LocationMatch "^/admin/assets/.*\.(js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </LocationMatch>
+    # Pas de cache pour index.html (pour toujours charger la dernière version)
+    <LocationMatch "^/admin/index\.html$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </LocationMatch>
+</IfModule>
+
+# Pages d'erreur personnalisées
+ErrorDocument 404 /404
+ErrorDocument 500 /500

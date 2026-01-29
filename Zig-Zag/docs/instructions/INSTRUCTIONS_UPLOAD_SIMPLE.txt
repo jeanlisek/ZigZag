@@ -1,0 +1,61 @@
+📤 INSTRUCTIONS SIMPLES POUR UPLOADER LE DASHBOARD
+==================================================
+
+🎯 CE QUE VOUS DEVEZ FAIRE
+---------------------------
+
+1. Sur votre ordinateur, vous avez :
+   📁 admin-dist/
+      ├── index.html
+      ├── assets/
+      └── vite.svg
+
+2. Sur le serveur Hostinger (public_html/), vous devez :
+   📁 Créer un dossier "admin"
+   📁 Mettre DEDANS le contenu de admin-dist/
+
+3. Résultat final sur le serveur :
+   📁 public_html/
+      └── admin/
+          ├── index.html      ← De admin-dist/index.html
+          ├── assets/         ← De admin-dist/assets/
+          └── vite.svg        ← De admin-dist/vite.svg
+
+📋 ÉTAPES DÉTAILLÉES
+--------------------
+
+ÉTAPE 1 : Se connecter à Hostinger via FTP
+   - Ouvrir FileZilla (ou autre client FTP)
+   - Se connecter à zig-zag.fun
+   - Aller dans public_html/
+
+ÉTAPE 2 : Créer le dossier admin
+   - Clic droit dans public_html/
+   - "Créer un nouveau dossier"
+   - Nommer "admin"
+
+ÉTAPE 3 : Uploader le contenu de admin-dist/
+   - Sur votre ordinateur, ouvrir le dossier admin-dist/
+   - Sélectionner TOUT (index.html, assets/, vite.svg)
+   - Glisser-déposer dans public_html/admin/
+
+ÉTAPE 4 : Vérifier
+   - public_html/admin/index.html existe ✅
+   - public_html/admin/assets/ existe ✅
+   - public_html/admin/vite.svg existe ✅
+
+✅ C'EST TOUT !
+
+⚠️ IMPORTANT
+------------
+- NE PAS uploader le dossier admin-dist/ lui-même
+- NE PAS mettre admin-dist/ dans admin/
+- Mettre le CONTENU de admin-dist/ dans admin/
+
+🎯 ANALOGIE
+-----------
+C'est comme si vous aviez une boîte (admin-dist/) avec des objets dedans,
+et vous voulez mettre ces objets dans une nouvelle boîte (admin/) sur le serveur.
+Vous ne mettez pas la boîte dans la boîte, vous mettez les objets de la première
+boîte dans la nouvelle boîte.
+

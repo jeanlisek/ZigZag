@@ -1,0 +1,20 @@
+# .cursorrules – Zigzag Project (sommaire)
+
+## Principes généraux
+- Répondre en français, concis, sans jargon inutile.
+- Demander confirmation avant toute action destructrice.
+- Citer les sources web si utilisées.
+
+## Où trouver les règles détaillées
+- Frontend : `docs/rules-frontend.md`
+- Backend (Python) : `docs/rules-backend.md`
+- Supabase & MCP : `docs/rules-supabase.md`
+- Sécurité & données : `docs/rules-security.md`
+- Workflow & tests : `docs/rules-workflow.md`
+
+## Rappels critiques (à garder ici)
+- Secrets : ne jamais exposer de clés privées (`service_role`). Clé anon uniquement côté client.
+- Supabase MCP : `https://mcp.supabase.com/mcp?project_ref=tihrltssmpxpreadpzqm`. Toujours respecter le RLS ; éviter `select *` sur tables sensibles.
+- Admin : credentials à externaliser (env), session 24h max, vérifier la session avant action.
+- Actions destructrices : toujours demander validation explicite.
+- ASCII par défaut ; pas de suppression/écrasement sans confirmation.

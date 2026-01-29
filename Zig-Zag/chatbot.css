@@ -1,0 +1,1254 @@
+/* Chatbot Widget Styles - Adapté au thème violet ZigZag */
+.ai-chat-widget {
+    position: fixed;
+    bottom: 100px; /* Au-dessus du footer flottant (qui est à ~24px du bas + hauteur) */
+    right: 20px;
+    z-index: 9999;
+    font-family: 'General Sans', 'Roboto', sans-serif;
+}
+
+/* Sur mobile, ajuster la position */
+@media (max-width: 768px) {
+    .ai-chat-widget {
+        bottom: 90px; /* Légèrement plus bas sur mobile */
+    }
+}
+
+/* Toggle Button */
+#aiChatToggle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 50%, #40C4D4 100%);
+    box-shadow: 0 8px 24px rgba(245, 66, 145, 0.4), 
+                0 0 0 0 rgba(245, 66, 145, 0.7),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(245, 66, 145, 0.3);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    overflow: visible;
+    animation: buttonGlow 3s ease-in-out infinite;
+}
+
+@keyframes buttonGlow {
+    0%, 100% {
+        box-shadow: 0 8px 24px rgba(245, 66, 145, 0.4), 
+                    0 0 0 0 rgba(245, 66, 145, 0.7),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                    0 0 30px rgba(245, 66, 145, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 24px rgba(245, 66, 145, 0.6), 
+                    0 0 0 4px rgba(245, 66, 145, 0.3),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                    0 0 40px rgba(64, 196, 212, 0.4);
+    }
+}
+
+#aiChatToggle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 50%, #40C4D4 100%);
+    opacity: 0;
+    animation: ripple 2s ease-out infinite;
+    z-index: -1;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+#aiChatToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(245, 66, 145, 0.6),
+                0 0 0 8px rgba(245, 66, 145, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                0 0 50px rgba(64, 196, 212, 0.5);
+    border-color: rgba(255, 255, 255, 0.6);
+    animation: buttonGlowHover 1.5s ease-in-out infinite;
+}
+
+@keyframes buttonGlowHover {
+    0%, 100% {
+        box-shadow: 0 12px 32px rgba(245, 66, 145, 0.6),
+                    0 0 0 8px rgba(245, 66, 145, 0.15),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                    0 0 50px rgba(64, 196, 212, 0.5);
+    }
+    50% {
+        box-shadow: 0 12px 32px rgba(245, 66, 145, 0.8),
+                    0 0 0 10px rgba(255, 145, 45, 0.2),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+                    0 0 60px rgba(64, 196, 212, 0.7);
+    }
+}
+
+#aiChatToggle:active {
+    transform: scale(1.05);
+}
+
+#aiChatToggle .loader {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+#aiChatToggle .box {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 900;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+                 0 0 20px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+                inset 0 2px 8px rgba(255, 255, 255, 0.3),
+                0 0 0 2px rgba(255, 255, 255, 0.2);
+    animation: chatPulse 2s ease-in-out infinite, chatRotate 4s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Style pour l'image de la mascotte dans le bouton */
+#aiChatToggle .mascot-box {
+    padding: 4px;
+    overflow: hidden;
+}
+
+#aiChatToggle .mascot-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    display: block;
+}
+
+#aiChatToggle:hover .mascot-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Animation pour le changement de mascotte */
+@keyframes mascotFade {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+#aiChatToggle .box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 70%
+    );
+    animation: shine 3s ease-in-out infinite;
+}
+
+#aiChatToggle .box::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    padding: 2px;
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 50%, #40C4D4 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: borderGlow 2s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+@keyframes chatPulse {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+                    inset 0 2px 8px rgba(255, 255, 255, 0.3),
+                    0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 6px 24px rgba(245, 66, 145, 0.4),
+                    inset 0 2px 8px rgba(255, 255, 255, 0.4),
+                    0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+}
+
+@keyframes chatRotate {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-4deg);
+    }
+    75% {
+        transform: rotate(4deg);
+    }
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        opacity: 0.4;
+        filter: blur(2px);
+    }
+    50% {
+        opacity: 0.8;
+        filter: blur(4px);
+    }
+}
+
+#aiChatToggle .notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #FF6B35 0%, #FF4757 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5),
+                0 0 0 2px rgba(245, 66, 145, 0.2);
+    animation: badgePulse 1.5s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+/* Chat Panel - Design Glassmorphism Moderne - Adapté au thème violet */
+#aiChatPanel {
+    position: absolute;
+    bottom: 90px;
+    right: 0;
+    width: 400px;
+    max-width: calc(100vw - 40px);
+    height: 650px;
+    max-height: calc(100vh - 120px);
+    background: rgba(45, 27, 78, 0.7); /* Fond violet foncé avec transparence */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(75, 65, 126, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(245, 66, 145, 0.1);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: panelSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    /* Amélioration du rendu des bords arrondis */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translateZ(0);
+    will-change: transform;
+    /* Correction du bug de bordure au sommet */
+    isolation: isolate;
+    contain: layout style paint;
+    /* Forcer le rendu correct des coins arrondis */
+    -webkit-mask-image: -webkit-radial-gradient(white, white);
+    mask-image: radial-gradient(white, white);
+}
+
+/* Effet de brillance animé sur le panel */
+#aiChatPanel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: shineSweep 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shineSweep {
+    0% {
+        left: -100%;
+    }
+    50%, 100% {
+        left: 100%;
+    }
+}
+
+/* Overlay de gradient animé */
+#aiChatPanel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(245, 66, 145, 0.1) 0%,
+        rgba(255, 145, 45, 0.08) 25%,
+        rgba(64, 196, 212, 0.06) 50%,
+        rgba(255, 145, 45, 0.08) 75%,
+        rgba(245, 66, 145, 0.1) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease infinite;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 32px;
+    /* S'assurer que le gradient ne dépasse pas - correction du bug */
+    clip-path: inset(0 round 32px);
+    -webkit-mask-image: -webkit-radial-gradient(white, white);
+    mask-image: radial-gradient(white, white);
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes panelSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+#aiChatPanel.active {
+    display: flex;
+    z-index: 2;
+}
+
+/* Assurer que le contenu est au-dessus des overlays */
+#aiChatPanel > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Chat Header - Design Glassmorphism - Adapté au thème violet */
+.chat-header {
+    padding: 22px 24px;
+    background: rgba(75, 65, 126, 0.4); /* Violet brand avec transparence */
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    border-top: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    z-index: 3;
+    box-sizing: border-box;
+    /* Amélioration du rendu des bords arrondis */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Correction du bug de bordure - alignement parfait */
+    margin: 0;
+    /* S'assurer que les coins arrondis sont parfaits - correction finale */
+    clip-path: inset(0 round 32px 32px 0 0);
+    -webkit-mask-image: -webkit-radial-gradient(white, white);
+    mask-image: radial-gradient(white, white);
+    /* Forcer le rendu correct des coins supérieurs */
+    border-top: 1px solid transparent;
+}
+
+/* Effet de gradient animé sur le header */
+.chat-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        #F54291 0%,
+        #FF912D 50%,
+        #40C4D4 100%
+    );
+    background-size: 200% 100%;
+    animation: gradientFlow 3s ease infinite;
+    /* S'assurer que le gradient suit parfaitement la courbe */
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    z-index: 1;
+}
+
+@keyframes gradientFlow {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.chat-header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.chat-export-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.chat-export-btn:hover {
+    background: rgba(245, 66, 145, 0.2);
+    border-color: rgba(245, 66, 145, 0.5);
+    transform: scale(1.15) translateY(-2px);
+    color: #F54291;
+    box-shadow: 0 4px 12px rgba(245, 66, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+
+.chat-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 50%, #40C4D4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+    font-weight: 900;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+                 0 0 12px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 16px rgba(245, 66, 145, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 20px rgba(245, 66, 145, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    animation: avatarFloat 3s ease-in-out infinite, avatarGlow 2s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    /* Amélioration du rendu du texte Z */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1;
+    transform: translateZ(0);
+    /* Suppression du halo bizarre - design plus propre */
+    isolation: isolate;
+}
+
+/* Suppression du ::after qui créait un halo bizarre */
+.chat-avatar::after {
+    display: none;
+}
+
+/* Style pour l'image de mascotte dans l'avatar du header */
+.chat-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes avatarGlow {
+    0%, 100% {
+        box-shadow: 0 4px 16px rgba(245, 66, 145, 0.4),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                    0 0 20px rgba(245, 66, 145, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 16px rgba(245, 66, 145, 0.6),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                    0 0 30px rgba(64, 196, 212, 0.5);
+    }
+}
+
+@keyframes avatarPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.5;
+    }
+}
+
+@keyframes avatarFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.chat-header-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.chat-header-info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff; /* Texte blanc pour contraste sur fond violet */
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-header-info p {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7); /* Texte blanc avec opacité */
+    font-weight: 500;
+}
+
+.chat-close-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.chat-close-btn:hover {
+    background: rgba(245, 66, 145, 0.2);
+    border-color: rgba(245, 66, 145, 0.5);
+    transform: rotate(90deg) scale(1.15);
+    color: #F54291;
+    box-shadow: 0 4px 12px rgba(245, 66, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Chat Messages Area - Design transparent avec effet de profondeur - Adapté au thème violet */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: rgba(45, 27, 78, 0.3); /* Fond violet très transparent */
+    position: relative;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+/* Effet de dégradé en haut et en bas pour le scroll */
+.chat-messages::before {
+    content: '';
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.chat-messages::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.chat-message {
+    display: flex;
+    gap: 10px;
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message.assistant {
+    flex-direction: row;
+}
+
+.chat-message.user {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    overflow: hidden;
+}
+
+/* Style pour l'image de mascotte dans les avatars des messages */
+.message-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.message-avatar.assistant {
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 100%);
+    box-shadow: 0 2px 8px rgba(245, 66, 145, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.message-avatar.user {
+    background: linear-gradient(135deg, #40C4D4 0%, #8A3AAA 100%);
+    box-shadow: 0 2px 8px rgba(64, 196, 212, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.message-content {
+    position: relative;
+    max-width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.message-bubble {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    position: relative;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.message-bubble .chat-link {
+    color: inherit;
+    text-decoration: underline;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.message-bubble.assistant .chat-link {
+    color: #F54291;
+    font-weight: 600;
+}
+
+.message-bubble.user .chat-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.message-bubble .chat-link:hover {
+    opacity: 1;
+}
+
+.message-copy-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(75, 65, 126, 0.4); /* Violet brand avec transparence */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.chat-message:hover .message-copy-btn {
+    opacity: 1;
+}
+
+.message-copy-btn:hover {
+    background: rgba(75, 65, 126, 0.6); /* Violet plus opaque au survol */
+    border-color: rgba(245, 66, 145, 0.4);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 4px 8px rgba(245, 66, 145, 0.3);
+}
+
+.message-feedback {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.chat-message.assistant:hover .message-feedback {
+    opacity: 1;
+}
+
+.feedback-btn {
+    padding: 8px 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    background: rgba(75, 65, 126, 0.3); /* Violet brand avec transparence */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ffffff;
+    font-family: 'General Sans', 'Roboto', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.feedback-btn:hover {
+    background: rgba(75, 65, 126, 0.5); /* Violet plus opaque au survol */
+    border-color: rgba(245, 66, 145, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(245, 66, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.feedback-btn.active {
+    background: rgba(245, 66, 145, 0.25);
+    border-color: #F54291;
+    color: #F54291;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(245, 66, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.message-bubble.assistant {
+    background: rgba(75, 65, 126, 0.4); /* Violet brand avec transparence */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #ffffff;
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.message-bubble.user {
+    background: linear-gradient(135deg, rgba(245, 66, 145, 0.9) 0%, rgba(255, 145, 45, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    border-bottom-right-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(245, 66, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Typing Indicator - Design glassmorphism - Adapté au thème violet */
+.typing-indicator {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(45, 27, 78, 0.4); /* Fond violet avec transparence */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 8px;
+    height: 8px;
+    background: #F54291;
+    border-radius: 50%;
+    animation: typingDot 1.4s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingDot {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+.typing-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7); /* Texte blanc avec opacité */
+    font-style: italic;
+    font-family: 'General Sans', 'Roboto', sans-serif;
+}
+
+/* Quick Questions - Design glassmorphism - Adapté au thème violet */
+.quick-questions {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(45, 27, 78, 0.4); /* Fond violet avec transparence */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.quick-question-btn {
+    padding: 12px 18px;
+    background: rgba(75, 65, 126, 0.3); /* Violet brand avec transparence */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: left;
+    font-family: 'General Sans', 'Roboto', sans-serif;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    word-wrap: break-word;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.quick-question-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.quick-question-btn:hover {
+    background: rgba(75, 65, 126, 0.5); /* Violet plus opaque au survol */
+    border-color: rgba(245, 66, 145, 0.4);
+    transform: translateX(6px) scale(1.02);
+    box-shadow: 0 4px 16px rgba(245, 66, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.quick-question-btn:hover::before {
+    left: 100%;
+}
+
+.quick-question-btn:active {
+    transform: translateX(4px) scale(0.98);
+}
+
+/* Chat Input - Design glassmorphism - Adapté au thème violet */
+.chat-input-container {
+    padding: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 12px;
+    background: rgba(75, 65, 126, 0.4); /* Violet brand avec transparence */
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 14px 18px;
+    background: rgba(45, 27, 78, 0.5); /* Fond violet foncé */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    font-size: 14px;
+    font-family: 'General Sans', 'Roboto', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2),
+                0 1px 0 rgba(255, 255, 255, 0.1);
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.chat-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.chat-input:focus {
+    background: rgba(45, 27, 78, 0.7); /* Fond violet plus opaque au focus */
+    border-color: rgba(245, 66, 145, 0.5);
+    box-shadow: 0 0 0 4px rgba(245, 66, 145, 0.2),
+                inset 0 2px 4px rgba(0, 0, 0, 0.2),
+                0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.chat-send-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 100%);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(245, 66, 145, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.chat-send-btn:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(245, 66, 145, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.chat-send-btn:active {
+    transform: scale(1.05) rotate(-5deg);
+}
+
+.chat-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    background: rgba(245, 66, 145, 0.3);
+}
+
+/* Scrollbar - Design moderne et transparent */
+.chat-messages::-webkit-scrollbar,
+.quick-questions::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track,
+.quick-questions::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 8px 0;
+}
+
+.chat-messages::-webkit-scrollbar-thumb,
+.quick-questions::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        135deg,
+        rgba(245, 66, 145, 0.4) 0%,
+        rgba(255, 145, 45, 0.4) 50%,
+        rgba(64, 196, 212, 0.4) 100%
+    );
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover,
+.quick-questions::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(245, 66, 145, 0.6) 0%,
+        rgba(255, 145, 45, 0.6) 50%,
+        rgba(64, 196, 212, 0.6) 100%
+    );
+    box-shadow: 0 2px 8px rgba(245, 66, 145, 0.3);
+}
+
+/* Responsive */
+/* Améliorations accessibilité */
+.chat-panel:focus-within {
+    outline: 2px solid rgba(245, 66, 145, 0.5);
+    outline-offset: 2px;
+}
+
+.quick-question-btn:focus,
+.chat-send-btn:focus,
+.chat-close-btn:focus,
+.chat-export-btn:focus {
+    outline: 2px solid rgba(245, 66, 145, 0.5);
+    outline-offset: 2px;
+}
+
+/* Mode sombre (si activé) - Adaptation au thème violet ZigZag */
+@media (prefers-color-scheme: dark) {
+    /* Le thème ZigZag est déjà sombre, donc ces styles sont déjà appliqués par défaut */
+    /* On garde cette section pour compatibilité mais les styles principaux sont déjà adaptés */
+    #aiChatPanel {
+        background: rgba(45, 27, 78, 0.7);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .chat-header {
+        background: rgba(75, 65, 126, 0.4);
+    }
+    
+    .message-bubble.assistant {
+        background: rgba(75, 65, 126, 0.4);
+        color: rgba(255, 255, 255, 1);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .quick-question-btn {
+        background: rgba(75, 65, 126, 0.3);
+        color: rgba(255, 255, 255, 1);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .chat-input {
+        background: rgba(45, 27, 78, 0.5);
+        color: rgba(255, 255, 255, 1);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .chat-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+}
+
+/* Effet de particules flottantes en arrière-plan (optionnel) */
+#aiChatPanel {
+    position: relative;
+}
+
+#aiChatPanel .floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 32px;
+}
+
+#aiChatPanel .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(245, 66, 145, 0.3);
+    border-radius: 50%;
+    animation: floatParticle 15s infinite ease-in-out;
+}
+
+@keyframes floatParticle {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    50% {
+        transform: translate(100px, -100px) scale(1.5);
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 480px) {
+    #aiChatPanel {
+        width: calc(100vw - 20px);
+        height: calc(100vh - 100px);
+        bottom: 100px; /* Au-dessus du footer */
+        right: 10px;
+    }
+    
+    #aiChatToggle {
+        width: 64px;
+        height: 64px;
+        bottom: 90px; /* Au-dessus du footer */
+        right: 15px;
+    }
+    
+    #aiChatToggle .box {
+        width: 44px;
+        height: 44px;
+        font-size: 28px;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    .message-feedback {
+        opacity: 1;
+    }
+}

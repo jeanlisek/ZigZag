@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirection...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #40C4D4 0%, #F54291 50%, #FF912D 100%);
+            font-family: 'Roboto', sans-serif;
+        }
+        .loader {
+            text-align: center;
+            color: white;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+        <p>Connexion en cours...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        // Configuration Supabase
+        const SUPABASE_URL = "https://tihrltssmpxpreadpzqm.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaHJsdHNzbXB4cHJlYWRwenFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjEwNDksImV4cCI6MjA3OTczNzA0OX0.lXbPKA8tYj7o582onzj8c9y1vhkdXrk5SN8WmIahJpY";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Fonction pour rediriger vers game.zig-zag.fun avec les tokens
+        function redirectToGame() {
+            console.log('🔍 oauth-callback.html: Analyse de l\'URL...');
+            console.log('URL complète:', window.location.href);
+            console.log('Hash:', window.location.hash);
+            
+            // Récupérer les tokens depuis l'URL hash
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            const accessToken = hashParams.get('access_token');
+            const refreshToken = hashParams.get('refresh_token');
+            const expiresIn = hashParams.get('expires_in');
+            const error = hashParams.get('error');
+            const errorDescription = hashParams.get('error_description');
+
+            if (error) {
+                console.error('❌ Erreur OAuth:', error, errorDescription);
+                // Rediriger vers la page de connexion avec un message d'erreur
+                window.location.href = '/jouer?error=' + encodeURIComponent(error) + (errorDescription ? '&description=' + encodeURIComponent(errorDescription) : '');
+                return;
+            }
+
+            if (accessToken && refreshToken) {
+                console.log('✅ Tokens trouvés dans l\'URL hash');
+                // Préserver type=recovery (mot de passe oublié) pour que /auth/callback redirige vers /auth/reset-password
+                const type = hashParams.get('type') || 'login';
+                let gameUrl = 'https://game.zig-zag.fun/auth/callback';
+                const hash = `#access_token=${accessToken}&refresh_token=${refreshToken}&expires_in=${expiresIn || 3600}&token_type=bearer&type=${type}`;
+                gameUrl += hash;
+                
+                console.log('🚀 Redirection vers:', gameUrl, '(type=', type, ')');
+                // Rediriger vers game.zig-zag.fun
+                window.location.href = gameUrl;
+            } else {
+                console.log('⚠️ Pas de tokens dans l\'URL hash, tentative de récupération de session...');
+                // Pas de tokens, essayer de récupérer la session depuis Supabase
+                supabaseClient.auth.getSession().then(({ data: { session }, error: sessionError }) => {
+                    if (sessionError) {
+                        console.error('❌ Erreur lors de la récupération de session:', sessionError);
+                        window.location.href = '/jouer?error=session_error';
+                        return;
+                    }
+                    
+                    if (session) {
+                        console.log('✅ Session trouvée, redirection vers game.zig-zag.fun');
+                        // Préserver type=recovery si présent dans l'URL (mot de passe oublié)
+                        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                        const type = hashParams.get('type') || 'login';
+                        let gameUrl = 'https://game.zig-zag.fun/auth/callback';
+                        const hash = `#access_token=${session.access_token}&refresh_token=${session.refresh_token}&expires_in=${session.expires_in || 3600}&token_type=bearer&type=${type}`;
+                        gameUrl += hash;
+                        console.log('🚀 Redirection vers:', gameUrl, '(type=', type, ')');
+                        window.location.href = gameUrl;
+                    } else {
+                        // Pas de session, vérifier si on est arrivé ici sans tokens (problème de redirection)
+                        console.error('❌ Aucune session trouvée et pas de tokens dans l\'URL');
+                        console.log('🔍 Cela signifie probablement que Supabase n\'a pas redirigé correctement vers /oauth-callback');
+                        console.log('🔍 Vérifiez que https://zig-zag.fun/oauth-callback est dans les Redirect URLs de Supabase');
+                        window.location.href = '/jouer?error=no_session&reason=no_tokens_in_url';
+                    }
+                });
+            }
+        }
+
+        // Vérifier immédiatement si on a des tokens dans l'URL
+        if (window.location.hash && window.location.hash.includes('access_token')) {
+            console.log('✅ Tokens détectés immédiatement dans l\'URL');
+            redirectToGame();
+        } else if (window.location.hash && window.location.hash.includes('error')) {
+            console.log('❌ Erreur détectée dans l\'URL');
+            redirectToGame();
+        } else {
+            // Pas de hash, attendre que la page soit chargée et essayer de récupérer la session
+            console.log('⚠️ Pas de hash dans l\'URL, attente du chargement de la page...');
+            window.addEventListener('load', () => {
+                // Attendre un peu pour que Supabase traite les tokens (si ils arrivent)
+                setTimeout(() => {
+                    // Vérifier à nouveau si un hash est apparu
+                    if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash.includes('error'))) {
+                        redirectToGame();
+                    } else {
+                        // Pas de hash, essayer de récupérer la session
+                        redirectToGame();
+                    }
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+</html>

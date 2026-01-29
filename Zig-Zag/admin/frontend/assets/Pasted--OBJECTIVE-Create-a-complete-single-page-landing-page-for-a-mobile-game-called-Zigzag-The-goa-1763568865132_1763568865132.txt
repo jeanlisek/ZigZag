@@ -1,0 +1,79 @@
+## OBJECTIVE
+Create a complete, single-page landing page for a mobile game called "Zigzag". The goal is to make the game look incredibly fun and encourage users to download it. The page should be modern, visually appealing, and fully responsive for both desktop and mobile.
+
+## GAME CONCEPT
+"Zigzag" is an online, international version of the "Telephone Game" (le téléphone arabe).
+1.  A player starts a "chain" with a piece of text, a drawing, or a voice message.
+2.  This message is passed to 6 other random players around the world, one by one.
+3.  Each player only sees the previous step and must reinterpret it, alternating between drawing, writing a description, or recording a voice note.
+4.  The core fun comes from the hilarious misinterpretations and the final reveal that shows the absurd transformation of the original message.
+
+## STYLE & BRANDING
+-   **Vibe:** Extremely fun, chaotic, colorful, and playful.
+-   **Colors:** Use the color palette from the provided logo: a vibrant turquoise (#4ECDC4), a warm orange (#FF6B6B), a bright pink (#F7B801, adjust as needed from logo), and a deep, dark font color for readability (#333333). Use a light, off-white for the background.
+-   **Logo:** The "Zigzag" logo must be the hero element at the top of the page.
+-   **Fonts:** Use "Poppins" (or a similar playful, rounded sans-serif font) for all headings and "Roboto" for body text.
+-   **Animations:** Add subtle, fun animations: elements should fade in on scroll, buttons should have a slight bounce effect on hover.
+
+## PAGE STRUCTURE & CONTENT
+
+### 1. Hero Section (Top of the page)
+-   **Navbar:** Simple, with the "Zigzag" logo on the left, and links to "How it Works", "Gallery", and a "Download" button on the right.
+-   **Main Content:**
+    -   Display the **Zigzag logo** prominently in the center.
+    -   **Headline (H1):** `Le jeu qui déforme vos messages à travers le monde.`
+    -   **Subheading (p):** `Lancez une phrase, un dessin ou un message vocal. Découvrez le chaos hilarant qui en résulte après un tour du monde en 7 étapes.`
+    -   **Call to Action Buttons:** Two buttons, side-by-side: `[Apple App Store icon] Télécharger` and `[Google Play Store icon] Télécharger`.
+
+### 2. "How it Works" Section
+-   **Title (H2):** `Comment ça marche ?`
+-   **Layout:** A 3-step visual guide using cards or columns. Each step needs a simple, clean icon.
+    -   **Step 1:**
+        -   **Icon:** A "pencil" or "idea bulb" icon.
+        -   **Title (H3):** `1. Lancez un Zigzag`
+        -   **Text (p):** `Commencez avec une idée simple : une phrase, un dessin, ou même un message vocal.`
+    -   **Step 2:**
+        -   **Icon:** A "globe" or "forward arrow" icon.
+        -   **Title (H3):** `2. Laissez-le voyager`
+        -   **Text (p):** `Votre message est transmis à 6 joueurs aléatoires dans le monde, qui le transforment à tour de rôle.`
+    -   **Step 3:**
+        -   **Icon:** A "laughing face" or "camera" icon.
+        -   **Title (H3):** `3. Découvrez le chaos`
+        -   **Text (p):** `Recevez le résultat final ! Comparez le départ et l'arrivée et partagez votre histoire absurde.`
+
+### 3. Key Features Section
+-   **Title (H2):** `Une expérience unique`
+-   **Layout:** Use three distinct feature blocks with bold icons.
+    -   **Feature 1:**
+        -   **Icon:** Microphone and paintbrush icon.
+        -   **Title (H3):** `Chaos Multimédia`
+        -   **Text (p):** `Passez du texte au dessin, puis à la voix ! Chaque média est une nouvelle chance de déformer le message.`
+    -   **Feature 2:**
+        -   **Icon:** People connected around a globe icon.
+        -   **Title (H3):** `Rencontres Mondiales`
+        -   **Text (p):** `Jouez avec des inconnus du monde entier et faites-vous de nouveaux amis basés sur un fou rire partagé.`
+    -   **Feature 3:**
+        -   **Icon:** Infinite loop icon.
+        -   **Title (H3):** `Rejouabilité Infinie`
+        -   **Text (p):** `Grâce à des millions de combinaisons de joueurs et d'idées, aucune partie n'est jamais la même.`
+
+### 4. Gallery Section (Most Important!)
+-   **Title (H2):** `Rien ne se passe jamais comme prévu...`
+-   **Layout:** A visually engaging carousel or a masonry grid.
+-   **Content:** Create 3-4 fake examples of completed "Zigzags". Each example should show:
+    -   A "Start" card with an initial prompt (e.g., Text: "A happy little cloud").
+    -   An "End" card showing the final, absurd result (e.g., A drawing of a screaming potato).
+    -   **Example 1:** Start (Text): "Un chat en costume de pirate" -> End (Drawing): [AI, please generate a simple, funny drawing of a dog wearing a chef's hat].
+    -   **Example 2:** Start (Drawing): [AI, please generate a simple drawing of a sun with sunglasses] -> End (Text): "An angry egg is watching you".
+    -   **Example 3:** Start (Text): "Deux bananes qui dansent la valse" -> End (Drawing): [AI, please generate a simple, funny drawing of two yellow snakes tied in a knot].
+
+### 5. Final Call to Action Section
+-   **Title (H2):** `Prêt(e) à perdre le contrôle ?`
+-   **Subheading (p):** `Téléchargez Zigzag maintenant et lancez votre premier message dans le chaos.`
+-   **Buttons:** Repeat the two download buttons from the Hero section.
+
+### 6. Footer
+-   **Layout:** Simple, clean footer.
+-   **Content:** Include links for "Contact", "Presse", "Mentions Légales", and icons for social media (Twitter, Instagram, TikTok).
+
+Please generate the complete HTML, CSS, and JavaScript for this landing page. Use clean, well-commented code. The CSS should be in a separate file.

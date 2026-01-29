@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="jouer.title">Inscription & Connexion - ZigZag</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#F54291">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ZigZag">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="attached_assets/image_1763569221576.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cookies.css">
+    <link rel="icon" type="image/png" href="attached_assets/image_1763569221576.png">
+    
+    <style>
+        /* Design Glassmorphism Moderne */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #40C4D4 0%, #F54291 50%, #FF912D 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Particules animées en arrière-plan */
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: backgroundShift 20s ease infinite;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .auth-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 32px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                        inset 0 -1px 0 rgba(245, 66, 145, 0.1);
+            padding: 40px;
+            animation: cardSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Effet de brillance sur les cartes */
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shine 8s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: #2C2A35;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .auth-header p {
+            color: rgba(44, 42, 53, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2C2A35;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s ease;
+            color: #2C2A35;
+            box-sizing: border-box;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(44, 42, 53, 0.5);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(245, 66, 145, 0.6);
+            box-shadow: 0 0 0 4px rgba(245, 66, 145, 0.15),
+                        inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .form-group input.error {
+            border-color: #ff4757;
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        .form-group input.success {
+            border-color: #2ed573;
+            background: rgba(46, 213, 115, 0.1);
+        }
+
+        /* Messages de validation */
+        .validation-message {
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .validation-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .validation-message.error {
+            color: #ff4757;
+        }
+
+        .validation-message.success {
+            color: #2ed573;
+        }
+
+        .validation-message::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .validation-message.error::before {
+            content: '✕';
+            color: #ff4757;
+        }
+
+        .validation-message.success::before {
+            content: '✓';
+            color: #2ed573;
+        }
+
+        .profile-upload {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .profile-preview {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF912D, #F54291);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0 auto 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            padding: 5px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 16px rgba(245, 66, 145, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-preview::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-preview:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(245, 66, 145, 0.4);
+        }
+
+        .profile-preview:hover::before {
+            opacity: 1;
+        }
+
+        .profile-preview img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-upload input[type="file"] {
+            display: none;
+        }
+
+        .profile-upload label {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #2C2A35;
+        }
+
+        .optional-badge {
+            font-size: 11px;
+            color: #FF912D;
+            font-weight: 600;
+            background: rgba(255, 145, 45, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .form-remember {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        .form-remember input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #F54291;
+        }
+
+        .form-remember label {
+            cursor: pointer;
+            color: #2C2A35;
+            font-weight: 500;
+        }
+
+        /* Boutons */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #F54291 0%, #FF912D 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 16px rgba(245, 66, 145, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-submit:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245, 66, 145, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-submit.loading {
+            color: transparent;
+        }
+
+        .btn-submit.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Bouton Google */
+        .btn-google {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: #2C2A35;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-google:hover {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-google img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: rgba(44, 42, 53, 0.5);
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .divider span {
+            padding: 0 12px;
+        }
+
+        /* Messages d'erreur/succès globaux */
+        .alert {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert.error {
+            background: rgba(255, 71, 87, 0.2);
+            border: 1px solid rgba(255, 71, 87, 0.4);
+            color: #ff4757;
+        }
+
+        .alert.success {
+            background: rgba(46, 213, 115, 0.2);
+            border: 1px solid rgba(46, 213, 115, 0.4);
+            color: #2ed573;
+        }
+
+        .alert::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .alert.error::before {
+            content: '✕';
+        }
+
+        .alert.success::before {
+            content: '✓';
+        }
+
+        .forgot-password-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password-link a {
+            color: #FF912D;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-password-link a:hover {
+            color: #F54291;
+            text-decoration: underline;
+        }
+
+        /* Lien retour vers l'accueil */
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .back-to-home-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-home-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Indicateur de force du mot de passe */
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background: linear-gradient(90deg, #ff4757, #ff6348);
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background: linear-gradient(90deg, #ffa502, #ff6348);
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: linear-gradient(90deg, #2ed573, #26de81);
+        }
+
+        .password-strength-text {
+            margin-top: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .password-strength-text.weak {
+            color: #ff4757;
+        }
+
+        .password-strength-text.medium {
+            color: #ffa502;
+        }
+
+        .password-strength-text.strong {
+            color: #2ed573;
+        }
+
+        /* Bouton afficher/masquer mot de passe */
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(44, 42, 53, 0.6);
+            transition: color 0.2s ease;
+            z-index: 2;
+        }
+
+        .password-toggle-btn:hover {
+            color: rgba(44, 42, 53, 0.8);
+        }
+
+        .password-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .password-toggle input {
+            padding-right: 70px;
+        }
+
+        /* Animation confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #F54291;
+            animation: confettiFall linear forwards;
+        }
+
+        .confetti:nth-child(2n) {
+            background: #FF912D;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #40C4D4;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #FFD478;
+        }
+
+        .confetti:nth-child(5n) {
+            background: #8A3AAA;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Auto-complétion améliorée */
+        .form-group input[autocomplete] {
+            autocomplete: on;
+        }
+
+        @media (max-width: 900px) {
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .auth-card {
+                padding: 35px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 15px;
+            }
+
+            .auth-card {
+                padding: 30px 20px;
+            }
+
+            .auth-header h1 {
+                font-size: 24px;
+            }
+
+            .form-group input {
+                padding: 12px 14px;
+            }
+        }
+    </style>
+    
+    <!-- Client Supabase (UMD) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    </head>
+<body>
+    <!-- Lien retour vers l'accueil -->
+    <div class="back-to-home">
+        <a href="/" class="back-to-home-btn" data-i18n="jouer.back-home">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Retour</span>
+        </a>
+    </div>
+
+    <!-- Container pour confetti -->
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <!-- SIGNUP CARD -->
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1 data-i18n="jouer.signup.title">Créer un compte</h1>
+                    <p data-i18n="jouer.signup.subtitle">Rejoignez ZigZag !</p>
+                </div>
+                
+                <div id="signupAlert" class="alert" style="display: none;"></div>
+                
+                <form id="signupForm" enctype="multipart/form-data">
+                    <div class="profile-upload">
+                        <label data-i18n="jouer.signup.profile">Photo de Profil <span class="optional-badge" data-i18n="jouer.optional">(Optionnel)</span></label>
+                        <div class="profile-preview" onclick="document.getElementById('profileImage').click()">
+                            <span data-i18n="jouer.signup.add-photo">+ Photo</span>
+                        </div>
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail" data-i18n="jouer.email">Email</label>
+                        <input type="email" id="signupEmail" name="email" placeholder="exemple@zig-zag.fun" autocomplete="email" required>
+                        <div class="validation-message" id="signupEmailValidation"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayName" data-i18n="jouer.username">Pseudo</label>
+                        <input type="text" id="displayName" name="displayName" placeholder="ChaosPlayer42" autocomplete="username" required>
+                        <div class="validation-message" id="displayNameValidation"></div>
+                    </div>
+
+                    <div class="form-group password-toggle">
+                        <label for="signupPassword" data-i18n="jouer.password">Mot de passe</label>
+                        <input type="password" id="signupPassword" name="password" placeholder="••••••••" autocomplete="new-password" required>
+                        <button type="button" class="password-toggle-btn" id="toggleSignupPassword" aria-label="Afficher le mot de passe">
+                            <svg id="signupPasswordEye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg id="signupPasswordEyeOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </button>
+                        <div class="password-strength" id="signupPasswordStrength">
+                            <div class="password-strength-bar" id="signupPasswordStrengthBar"></div>
+                        </div>
+                        <div class="password-strength-text" id="signupPasswordStrengthText"></div>
+                        <div class="validation-message" id="signupPasswordValidation"></div>
+                    </div>
+
+                    <div class="form-group password-toggle">
+                        <label for="confirmPassword" data-i18n="jouer.confirm-password">Confirmer</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" autocomplete="new-password" required>
+                        <button type="button" class="password-toggle-btn" id="toggleConfirmPassword" aria-label="Afficher le mot de passe">
+                            <svg id="confirmPasswordEye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg id="confirmPasswordEyeOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </button>
+                        <div class="validation-message" id="confirmPasswordValidation"></div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="signupSubmit" data-i18n="jouer.signup.submit">Créer mon compte</button>
+                </form>
+
+                <div class="divider">
+                    <span data-i18n="jouer.or">ou</span>
+                </div>
+
+                <button type="button" class="btn-google" id="signupGoogle">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" onerror="this.style.display='none'">
+                    <span data-i18n="jouer.google.signup">Continuer avec Google</span>
+                </button>
+            </div>
+
+            <!-- LOGIN CARD -->
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1 data-i18n="jouer.login.title">Se connecter</h1>
+                    <p data-i18n="jouer.login.subtitle">Bienvenue !</p>
+                </div>
+                
+                <div id="loginAlert" class="alert" style="display: none;"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail" data-i18n="jouer.email">Email</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="exemple@zig-zag.fun" autocomplete="email" required>
+                        <div class="validation-message" id="loginEmailValidation"></div>
+                    </div>
+
+                    <div class="form-group password-toggle">
+                        <label for="loginPassword" data-i18n="jouer.password">Mot de passe</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle-btn" id="toggleLoginPassword" aria-label="Afficher le mot de passe">
+                            <svg id="loginPasswordEye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <svg id="loginPasswordEyeOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </button>
+                        <div class="validation-message" id="loginPasswordValidation"></div>
+                    </div>
+
+                    <div class="form-remember">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember" data-i18n="jouer.remember">Se souvenir de moi</label>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="loginSubmit" data-i18n="jouer.login.submit">Se connecter</button>
+                </form>
+
+                <div class="forgot-password-link">
+                    <a href="#" id="forgotPassword" data-i18n="jouer.forgot-password">Mot de passe oublié ?</a>
+                </div>
+
+                <div class="divider">
+                    <span data-i18n="jouer.or">ou</span>
+                </div>
+
+                <button type="button" class="btn-google" id="loginGoogle">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" onerror="this.style.display='none'">
+                    <span data-i18n="jouer.google.login">Continuer avec Google</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="cookies.js"></script>
+    
+    <script>
+        // Configuration Supabase
+        const SUPABASE_URL = "https://tihrltssmpxpreadpzqm.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaHJsdHNzbXB4cHJlYWRwenFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjEwNDksImV4cCI6MjA3OTczNzA0OX0.lXbPKA8tYj7o582onzj8c9y1vhkdXrk5SN8WmIahJpY";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Éléments du DOM
+        const signupForm = document.getElementById('signupForm');
+        const loginForm = document.getElementById('loginForm');
+        const signupEmailInput = document.getElementById('signupEmail');
+        const displayNameInput = document.getElementById('displayName');
+        const signupPasswordInput = document.getElementById('signupPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const loginEmailInput = document.getElementById('loginEmail');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const rememberCheckbox = document.getElementById('remember');
+        const signupSubmit = document.getElementById('signupSubmit');
+        const loginSubmit = document.getElementById('loginSubmit');
+        const signupAlert = document.getElementById('signupAlert');
+        const loginAlert = document.getElementById('loginAlert');
+        const profileInput = document.getElementById('profileImage');
+        const profilePreview = document.querySelector('.profile-preview');
+
+        // Constantes pour le stockage
+        const REMEMBER_EMAIL_KEY = 'zigzag_remember_email';
+        const REMEMBER_CHECKED_KEY = 'zigzag_remember_checked';
+
+        // Fonction pour sauvegarder l'email si "Se souvenir de moi" est coché
+        function saveRememberedEmail(email, isChecked) {
+            if (isChecked && email) {
+                localStorage.setItem(REMEMBER_EMAIL_KEY, email);
+                localStorage.setItem(REMEMBER_CHECKED_KEY, 'true');
+            } else {
+                localStorage.removeItem(REMEMBER_EMAIL_KEY);
+                localStorage.removeItem(REMEMBER_CHECKED_KEY);
+            }
+        }
+
+        // Fonction pour restaurer l'email sauvegardé
+        function restoreRememberedEmail() {
+            const savedEmail = localStorage.getItem(REMEMBER_EMAIL_KEY);
+            const wasChecked = localStorage.getItem(REMEMBER_CHECKED_KEY) === 'true';
+            
+            if (savedEmail && loginEmailInput) {
+                loginEmailInput.value = savedEmail;
+            }
+            
+            if (wasChecked && rememberCheckbox) {
+                rememberCheckbox.checked = true;
+            }
+        }
+
+        // Restaurer l'email au chargement de la page
+        restoreRememberedEmail();
+
+        // Fonctions utilitaires
+        function showAlert(element, message, type = 'error') {
+            element.textContent = message;
+            element.className = `alert ${type}`;
+            element.style.display = 'flex';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        function showValidation(input, message, type) {
+            const validationEl = document.getElementById(input.id + 'Validation');
+            if (validationEl) {
+                validationEl.textContent = message;
+                validationEl.className = `validation-message ${type} show`;
+                input.classList.remove('error', 'success');
+                input.classList.add(type);
+            }
+        }
+
+        function hideValidation(input) {
+            const validationEl = document.getElementById(input.id + 'Validation');
+            if (validationEl) {
+                validationEl.classList.remove('show');
+                input.classList.remove('error', 'success');
+            }
+        }
+
+        function setLoading(button, loading) {
+            if (loading) {
+                button.disabled = true;
+                button.classList.add('loading');
+            } else {
+                button.disabled = false;
+                button.classList.remove('loading');
+            }
+        }
+
+        // Fonction pour créer des confettis
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const colors = ['#F54291', '#FF912D', '#40C4D4', '#FFD478', '#8A3AAA'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(confetti);
+            }
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        // Fonction pour calculer la force du mot de passe
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            let feedback = [];
+
+            if (password.length >= 8) strength += 1;
+            else feedback.push('Au moins 8 caractères');
+
+            if (/[a-z]/.test(password)) strength += 1;
+            else feedback.push('Une minuscule');
+
+            if (/[A-Z]/.test(password)) strength += 1;
+            else feedback.push('Une majuscule');
+
+            if (/[0-9]/.test(password)) strength += 1;
+            else feedback.push('Un chiffre');
+
+            if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+            else feedback.push('Un caractère spécial');
+
+            if (password.length >= 12) strength += 1;
+
+            if (strength <= 2) {
+                return { level: 'weak', text: 'Faible', feedback };
+            } else if (strength <= 4) {
+                return { level: 'medium', text: 'Moyen', feedback };
+            } else {
+                return { level: 'strong', text: 'Fort', feedback };
+            }
+        }
+
+        // Fonction pour mettre à jour l'indicateur de force
+        function updatePasswordStrength(input, strengthBar, strengthText) {
+            const password = input.value;
+            if (!password) {
+                strengthBar.className = 'password-strength-bar';
+                strengthBar.style.width = '0%';
+                strengthText.textContent = '';
+                strengthText.className = 'password-strength-text';
+                return;
+            }
+
+            const strength = calculatePasswordStrength(password);
+            strengthBar.className = `password-strength-bar ${strength.level}`;
+            strengthText.textContent = strength.text;
+            strengthText.className = `password-strength-text ${strength.level}`;
+        }
+
+        // Toggle afficher/masquer mot de passe
+        function setupPasswordToggle(toggleBtn, input, eyeIcon, eyeOffIcon) {
+            if (!toggleBtn || !input) return;
+            
+            toggleBtn.addEventListener('click', () => {
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                eyeIcon.style.display = isPassword ? 'none' : 'block';
+                eyeOffIcon.style.display = isPassword ? 'block' : 'none';
+                toggleBtn.setAttribute('aria-label', isPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+            });
+        }
+
+        // Configuration des toggles de mot de passe
+        setupPasswordToggle(
+            document.getElementById('toggleSignupPassword'),
+            signupPasswordInput,
+            document.getElementById('signupPasswordEye'),
+            document.getElementById('signupPasswordEyeOff')
+        );
+
+        setupPasswordToggle(
+            document.getElementById('toggleConfirmPassword'),
+            confirmPasswordInput,
+            document.getElementById('confirmPasswordEye'),
+            document.getElementById('confirmPasswordEyeOff')
+        );
+
+        setupPasswordToggle(
+            document.getElementById('toggleLoginPassword'),
+            loginPasswordInput,
+            document.getElementById('loginPasswordEye'),
+            document.getElementById('loginPasswordEyeOff')
+        );
+
+        // Indicateur de force du mot de passe en temps réel
+        if (signupPasswordInput) {
+            signupPasswordInput.addEventListener('input', function() {
+                updatePasswordStrength(
+                    this,
+                    document.getElementById('signupPasswordStrengthBar'),
+                    document.getElementById('signupPasswordStrengthText')
+                );
+            });
+        }
+
+        // Validation en temps réel - Email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Vérifier si l'email existe déjà (débounced)
+        // Note: La vérification exacte nécessite service_role, donc on valide juste le format
+        // L'erreur "email already registered" sera gérée lors de l'inscription
+        let emailCheckTimeout = null;
+        async function checkEmailExists(email, validationElement) {
+            if (!email || !validateEmail(email)) {
+                if (validationElement) {
+                    validationElement.textContent = '';
+                    validationElement.classList.remove('show');
+                }
+                return;
+            }
+
+            clearTimeout(emailCheckTimeout);
+            emailCheckTimeout = setTimeout(async () => {
+                // Pour l'instant, on valide juste le format
+                // La vérification d'existence se fera lors de l'inscription
+                if (validationElement && validateEmail(email)) {
+                    showValidation(signupEmailInput, 'Format email valide', 'success');
+                }
+            }, 500);
+        }
+
+        // Vérifier si le pseudo existe déjà (débounced)
+        // Utilise la fonction SQL check_username_available pour plus de sécurité
+        let usernameCheckTimeout = null;
+        let isCheckingUsername = false;
+        async function checkUsernameExists(username, validationElement) {
+            if (!username || username.length < 3) {
+                if (validationElement) {
+                    validationElement.textContent = '';
+                    validationElement.classList.remove('show');
+                }
+                return;
+            }
+
+            // Éviter les requêtes multiples simultanées
+            if (isCheckingUsername) return;
+            
+            clearTimeout(usernameCheckTimeout);
+            usernameCheckTimeout = setTimeout(async () => {
+                isCheckingUsername = true;
+                try {
+                    // Utiliser la fonction SQL sécurisée pour vérifier la disponibilité
+                    const { data, error } = await supabaseClient.rpc('check_username_available', {
+                        username_to_check: username
+                    });
+
+                    isCheckingUsername = false;
+
+                    if (error) {
+                        console.warn('Erreur vérification pseudo:', error);
+                        // En cas d'erreur, on ne bloque pas l'utilisateur
+                        return;
+                    }
+
+                    // La fonction retourne TRUE si disponible, FALSE si pris
+                    if (data === true) {
+                        showValidation(displayNameInput, 'Pseudo disponible ✓', 'success');
+                    } else if (data === false) {
+                        showValidation(displayNameInput, 'Ce pseudo est déjà pris', 'error');
+                    }
+                } catch (err) {
+                    isCheckingUsername = false;
+                    console.warn('Impossible de vérifier le pseudo:', err);
+                    // En cas d'erreur, on ne bloque pas l'utilisateur
+                }
+            }, 800); // Délai un peu plus long pour éviter trop de requêtes
+        }
+
+        [signupEmailInput, loginEmailInput].forEach(input => {
+            if (input) {
+                input.addEventListener('blur', function() {
+                    const email = this.value.trim();
+                    if (email && !validateEmail(email)) {
+                        showValidation(this, 'Email invalide', 'error');
+                    } else if (email) {
+                        if (input === signupEmailInput) {
+                            // Vérifier si l'email existe déjà pour l'inscription
+                            checkEmailExists(email, document.getElementById('signupEmailValidation'));
+                        } else {
+                            showValidation(this, 'Email valide', 'success');
+                        }
+                    } else {
+                        hideValidation(this);
+                    }
+                });
+
+                input.addEventListener('input', function() {
+                    const email = this.value.trim();
+                    if (email && this.classList.contains('error')) {
+                        if (validateEmail(email)) {
+                            hideValidation(this);
+                            if (input === signupEmailInput) {
+                                checkEmailExists(email, document.getElementById('signupEmailValidation'));
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        // Validation en temps réel - Pseudo avec vérification disponibilité
+        if (displayNameInput) {
+            displayNameInput.addEventListener('blur', function() {
+                const username = this.value.trim();
+                if (username && username.length < 3) {
+                    showValidation(this, 'Le pseudo doit contenir au moins 3 caractères', 'error');
+                } else if (username && username.length > 20) {
+                    showValidation(this, 'Le pseudo ne doit pas dépasser 20 caractères', 'error');
+                } else if (username && !/^[a-zA-Z0-9_]+$/.test(username)) {
+                    showValidation(this, 'Le pseudo ne peut contenir que des lettres, chiffres et _', 'error');
+                } else if (username) {
+                    // Vérifier la disponibilité
+                    checkUsernameExists(username, document.getElementById('displayNameValidation'));
+                } else {
+                    hideValidation(this);
+                }
+            });
+
+            displayNameInput.addEventListener('input', function() {
+                const username = this.value.trim();
+                if (username && this.classList.contains('error')) {
+                    if (username.length >= 3 && username.length <= 20 && /^[a-zA-Z0-9_]+$/.test(username)) {
+                        hideValidation(this);
+                        checkUsernameExists(username, document.getElementById('displayNameValidation'));
+                    }
+                } else if (username && username.length >= 3 && username.length <= 20 && /^[a-zA-Z0-9_]+$/.test(username)) {
+                    // Vérifier la disponibilité en temps réel
+                    checkUsernameExists(username, document.getElementById('displayNameValidation'));
+                }
+            });
+        }
+
+        // Validation en temps réel - Mot de passe
+        function validatePassword(password) {
+            if (password.length < 8) {
+                return { valid: false, message: 'Le mot de passe doit contenir au moins 8 caractères' };
+            }
+            if (!/[A-Z]/.test(password)) {
+                return { valid: false, message: 'Le mot de passe doit contenir au moins une majuscule' };
+            }
+            if (!/[a-z]/.test(password)) {
+                return { valid: false, message: 'Le mot de passe doit contenir au moins une minuscule' };
+            }
+            if (!/[0-9]/.test(password)) {
+                return { valid: false, message: 'Le mot de passe doit contenir au moins un chiffre' };
+            }
+            return { valid: true, message: 'Mot de passe valide' };
+        }
+
+        [signupPasswordInput, loginPasswordInput].forEach(input => {
+            if (input) {
+                input.addEventListener('blur', function() {
+                    const password = this.value;
+                    if (password) {
+                        const validation = validatePassword(password);
+                        showValidation(this, validation.message, validation.valid ? 'success' : 'error');
+                    } else {
+                        hideValidation(this);
+                    }
+                });
+
+                input.addEventListener('input', function() {
+                    if (this.value && this.classList.contains('error')) {
+                        hideValidation(this);
+                    }
+                });
+            }
+        });
+
+        // Validation confirmation mot de passe
+        if (confirmPasswordInput && signupPasswordInput) {
+            confirmPasswordInput.addEventListener('blur', function() {
+                const password = signupPasswordInput.value;
+                const confirm = this.value;
+                if (confirm && password !== confirm) {
+                    showValidation(this, 'Les mots de passe ne correspondent pas', 'error');
+                } else if (confirm && password === confirm) {
+                    showValidation(this, 'Les mots de passe correspondent', 'success');
+                } else {
+                    hideValidation(this);
+                }
+            });
+
+            signupPasswordInput.addEventListener('input', function() {
+                if (confirmPasswordInput.value && signupPasswordInput.value !== confirmPasswordInput.value) {
+                    showValidation(confirmPasswordInput, 'Les mots de passe ne correspondent pas', 'error');
+                }
+            });
+        }
+
+        // Prévisualisation photo de profil
+        if (profileInput && profilePreview) {
+            profileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        showAlert(signupAlert, 'L\'image est trop grande (max 5MB)', 'error');
+                        this.value = '';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreview.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Inscription
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = signupEmailInput.value.trim().toLowerCase();
+                const username = displayNameInput.value.trim();
+                const password = signupPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                // Validation côté client
+                if (!email || !username || !password || !confirmPassword) {
+                    showAlert(signupAlert, 'Veuillez remplir tous les champs', 'error');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showAlert(signupAlert, 'Email invalide', 'error');
+                    return;
+                }
+
+                const passwordValidation = validatePassword(password);
+                if (!passwordValidation.valid) {
+                    showAlert(signupAlert, passwordValidation.message, 'error');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showAlert(signupAlert, 'Les mots de passe ne correspondent pas', 'error');
+                    return;
+                }
+
+                setLoading(signupSubmit, true);
+
+                try {
+                    // Normaliser le pseudo en minuscules pour éviter les doublons
+                    const normalizedUsername = username.toLowerCase();
+                    
+                    // Récupérer le fichier photo si sélectionné
+                    const profileFile = profileInput?.files?.[0];
+                    
+                    // Créer le compte d'abord
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                username: normalizedUsername
+                            }
+                        }
+                    });
+
+                    if (error) {
+                        console.error(error);
+                        let errorMessage = 'Erreur lors de la création du compte';
+                        if (error.message.includes('already registered')) {
+                            errorMessage = 'Cet email est déjà enregistré';
+                        } else if (error.message.includes('Invalid email')) {
+                            errorMessage = 'Email invalide';
+                        } else if (error.message.includes('Password')) {
+                            errorMessage = 'Le mot de passe ne respecte pas les critères de sécurité';
+                        }
+                        showAlert(signupAlert, errorMessage, 'error');
+                        setLoading(signupSubmit, false);
+                        return;
+                    }
+
+                    // Si une photo a été sélectionnée et que le compte a été créé, uploader directement via Edge Function
+                    if (profileFile && data.user) {
+                        try {
+                            console.log('📸 Photo sélectionnée pour utilisateur:', data.user.id);
+                            console.log('📏 Taille du fichier:', profileFile.size, 'bytes');
+                            console.log('📄 Nom du fichier:', profileFile.name);
+                            console.log('🔤 Type du fichier:', profileFile.type);
+                            
+                            // Uploader directement via Edge Function (contourne les restrictions RLS)
+                            console.log('⬆️ Upload avatar via Edge Function...');
+                            const formData = new FormData();
+                            formData.append('file', profileFile);
+                            formData.append('userId', data.user.id);
+                            
+                            // Récupérer l'URL Supabase et la clé anon
+                            const supabaseUrl = 'https://tihrltssmpxpreadpzqm.supabase.co';
+                            const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaHJsdHNzbXB4cHJlYWRwenFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjEwNDksImV4cCI6MjA3OTczNzA0OX0.lXbPKA8tYj7o582onzj8c9y1vhkdXrk5SN8WmIahJpY';
+                            
+                            const response = await fetch(`${supabaseUrl}/functions/v1/upload-avatar`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': `Bearer ${supabaseAnonKey}`
+                                },
+                                body: formData
+                            });
+                            
+                            if (!response.ok) {
+                                const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }));
+                                throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+                            }
+                            
+                            const result = await response.json();
+                            
+                            if (result.success) {
+                                console.log('✅ Avatar uploadé avec succès:', result.avatarUrl);
+                                console.log('📁 Fichier:', result.fileName);
+                            } else {
+                                throw new Error(result.error || 'Erreur lors de l\'upload');
+                            }
+                        } catch (err) {
+                            console.error('❌ Erreur lors de l\'upload de l\'avatar:', err);
+                            // Ne pas bloquer l'inscription si l'upload échoue
+                            showAlert(signupAlert, 'Compte créé mais erreur lors de l\'upload de la photo. Vous pourrez l\'ajouter plus tard depuis votre compte.', 'error');
+                        }
+                    }
+
+                    showAlert(signupAlert, 'Compte créé avec succès ! Vérifiez vos emails pour confirmer votre compte 🎉', 'success');
+                    
+                    // Animation confetti
+                    createConfetti();
+                    
+                    signupForm.reset();
+                    if (profilePreview) {
+                        profilePreview.innerHTML = '<span data-i18n="jouer.signup.add-photo">+ Photo</span>';
+                    }
+                    
+                    // Réinitialiser l'indicateur de force
+                    const strengthBar = document.getElementById('signupPasswordStrengthBar');
+                    const strengthText = document.getElementById('signupPasswordStrengthText');
+                    if (strengthBar) {
+                        strengthBar.className = 'password-strength-bar';
+                        strengthBar.style.width = '0%';
+                    }
+                    if (strengthText) {
+                        strengthText.textContent = '';
+                        strengthText.className = 'password-strength-text';
+                    }
+                    
+                    setLoading(signupSubmit, false);
+                } catch (err) {
+                    console.error(err);
+                    showAlert(signupAlert, 'Une erreur inattendue est survenue', 'error');
+                    setLoading(signupSubmit, false);
+                }
+            });
+        }
+
+        // Connexion
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = loginEmailInput.value.trim();
+                const password = loginPasswordInput.value;
+                const rememberMe = rememberCheckbox ? rememberCheckbox.checked : false;
+
+                if (!email || !password) {
+                    showAlert(loginAlert, 'Veuillez renseigner votre email et votre mot de passe', 'error');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showAlert(loginAlert, 'Email invalide', 'error');
+                    return;
+                }
+
+                setLoading(loginSubmit, true);
+
+                try {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) {
+                        console.error(error);
+                        let errorMessage = 'Erreur lors de la connexion';
+                        if (error.message.includes('Invalid login credentials')) {
+                            errorMessage = 'Email ou mot de passe incorrect';
+                        } else if (error.message.includes('Email not confirmed')) {
+                            errorMessage = 'Veuillez confirmer votre email avant de vous connecter';
+                        }
+                        showAlert(loginAlert, errorMessage, 'error');
+                        setLoading(loginSubmit, false);
+                        return;
+                    }
+
+                    // Sauvegarder l'email si "Se souvenir de moi" est coché
+                    saveRememberedEmail(email, rememberMe);
+
+                    showAlert(loginAlert, 'Connecté avec succès ! Redirection...', 'success');
+                    
+                    // Récupérer la session pour passer les tokens
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    
+                    // Redirection vers le jeu avec les tokens dans l'URL
+                    setTimeout(() => {
+                        let gameUrl;
+                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                            gameUrl = 'http://localhost:3000/auth/callback';
+                        } else {
+                            gameUrl = 'https://game.zig-zag.fun/auth/callback';
+                        }
+                        
+                        // Si on a une session, passer les tokens via l'URL hash
+                        if (session?.access_token && session?.refresh_token) {
+                            const hash = `#access_token=${session.access_token}&refresh_token=${session.refresh_token}&expires_in=${session.expires_in || 3600}&token_type=bearer&type=login`;
+                            gameUrl += hash;
+                        }
+                        
+                        window.location.href = gameUrl;
+                    }, 1000);
+                } catch (err) {
+                    console.error(err);
+                    showAlert(loginAlert, 'Une erreur inattendue est survenue', 'error');
+                    setLoading(loginSubmit, false);
+                }
+            });
+        }
+
+        // Gérer le changement d'état du checkbox "Se souvenir de moi"
+        if (rememberCheckbox) {
+            rememberCheckbox.addEventListener('change', function() {
+                // Si le checkbox est décoché, supprimer l'email sauvegardé
+                if (!this.checked) {
+                    localStorage.removeItem(REMEMBER_EMAIL_KEY);
+                    localStorage.removeItem(REMEMBER_CHECKED_KEY);
+                }
+            });
+        }
+
+        // Connexion Google - Inscription
+        const signupGoogleBtn = document.getElementById('signupGoogle');
+        if (signupGoogleBtn) {
+            signupGoogleBtn.addEventListener('click', async () => {
+                setLoading(signupGoogleBtn, true);
+                try {
+                    // Déterminer l'URL de redirection selon l'environnement
+                    // STRATÉGIE : Rediriger vers zig-zag.fun/oauth-callback qui redirigera vers game.zig-zag.fun
+                    // Cela évite les problèmes de Redirect URLs dans Supabase
+                    let redirectTo;
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        redirectTo = 'http://localhost:3000/auth/callback';
+                    } else {
+                        // Rediriger vers zig-zag.fun/oauth-callback qui gérera la redirection vers game.zig-zag.fun
+                        redirectTo = 'https://zig-zag.fun/oauth-callback';
+                    }
+                    
+                    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: redirectTo,
+                            queryParams: {
+                                access_type: 'offline',
+                                prompt: 'consent',
+                            }
+                        }
+                    });
+                    if (error) {
+                        showAlert(signupAlert, 'Erreur lors de la connexion Google', 'error');
+                        setLoading(signupGoogleBtn, false);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showAlert(signupAlert, 'Une erreur est survenue', 'error');
+                    setLoading(signupGoogleBtn, false);
+                }
+            });
+        }
+
+        // Connexion Google - Connexion
+        const loginGoogleBtn = document.getElementById('loginGoogle');
+        if (loginGoogleBtn) {
+            loginGoogleBtn.addEventListener('click', async () => {
+                setLoading(loginGoogleBtn, true);
+                try {
+                    // Déterminer l'URL de redirection selon l'environnement
+                    // STRATÉGIE : Rediriger vers zig-zag.fun/oauth-callback qui redirigera vers game.zig-zag.fun
+                    // Cela évite les problèmes de Redirect URLs dans Supabase
+                    let redirectTo;
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        redirectTo = 'http://localhost:3000/auth/callback';
+                    } else {
+                        // Rediriger vers zig-zag.fun/oauth-callback qui gérera la redirection vers game.zig-zag.fun
+                        redirectTo = 'https://zig-zag.fun/oauth-callback';
+                    }
+                    
+                    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: redirectTo,
+                            queryParams: {
+                                access_type: 'offline',
+                                prompt: 'consent',
+                            }
+                        }
+                    });
+                    if (error) {
+                        showAlert(loginAlert, 'Erreur lors de la connexion Google', 'error');
+                        setLoading(loginGoogleBtn, false);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showAlert(loginAlert, 'Une erreur est survenue', 'error');
+                    setLoading(loginGoogleBtn, false);
+                }
+            });
+        }
+
+        // NOTE: Le retour OAuth Google est géré automatiquement par Supabase
+        // Supabase redirige vers l'URL spécifiée dans redirectTo avec les tokens dans l'URL hash
+        // La page /auth/callback sur game.zig-zag.fun gère la réception des tokens
+        // Ce gestionnaire n'est plus nécessaire car Supabase redirige directement vers game.zig-zag.fun/auth/callback
+
+        // Mot de passe oublié
+        const forgotPasswordLink = document.getElementById('forgotPassword');
+        if (forgotPasswordLink) {
+            forgotPasswordLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const email = prompt('Entrez votre email pour réinitialiser votre mot de passe:');
+                if (email && validateEmail(email)) {
+                    try {
+                        // Déterminer l'URL de redirection selon l'environnement
+                        // STRATÉGIE : Utiliser la même stratégie que pour OAuth (via oauth-callback)
+                        let redirectTo;
+                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                            redirectTo = 'http://localhost:3000/auth/callback';
+                        } else {
+                            // Rediriger vers zig-zag.fun/oauth-callback qui redirigera vers game.zig-zag.fun
+                            redirectTo = 'https://zig-zag.fun/oauth-callback';
+                        }
+                        
+                        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                            redirectTo: redirectTo
+                        });
+                        if (error) {
+                            alert('Erreur: ' + error.message);
+                        } else {
+                            alert('Un email de réinitialisation a été envoyé !');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Une erreur est survenue');
+                    }
+                } else if (email) {
+                    alert('Email invalide');
+                }
+            });
+        }
+    </script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker enregistré avec succès:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Échec de l\'enregistrement du Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

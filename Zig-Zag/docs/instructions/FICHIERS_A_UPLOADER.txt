@@ -1,0 +1,89 @@
+📤 LISTE DES FICHIERS À UPLOADER SUR HOSTINGER
+=============================================
+
+📁 FICHIERS À LA RACINE (dans public_html/)
+-------------------------------------------
+✅ .htaccess                    ← IMPORTANT : Configuration serveur
+✅ index.html
+✅ jouer.html
+✅ contact.html
+✅ mentions-legales.html
+✅ presse.html
+✅ oauth-callback.html
+✅ 404.html
+✅ 500.html
+✅ style.css
+✅ script.js
+✅ chatbot.css
+✅ chatbot.js
+✅ cookies.css
+✅ cookies.js
+✅ i18n.js
+✅ sw.js
+✅ manifest.json
+
+📁 DASHBOARD ADMIN (Intégré - React)
+------------------------------------
+✅ admin/                       ← CRÉER ce dossier sur le serveur
+   ├── index.html              ← Contenu de admin-dist/index.html
+   ├── assets/                 ← Contenu de admin-dist/assets/
+   │   ├── index-*.js
+   │   ├── index-*.css
+   │   └── ...
+   └── vite.svg
+   
+⚠️ IMPORTANT : 
+   - Builder d'abord : ./build-admin.sh (génère admin-dist/)
+   - Uploader le CONTENU de admin-dist/ dans admin/ sur le serveur
+   - Accessible via : zig-zag.fun/admin
+   - Le dashboard fait partie du site statique
+
+📁 ASSETS
+---------
+✅ attached_assets/            ← Dossier complet avec images
+   ├── generated_images/
+   ├── image_*.png
+   └── ...
+
+❌ NE PAS UPLOADER
+------------------
+❌ admin/ (dossier SOURCE - contient le code React, node_modules, etc.)
+   → C'est le code source, PAS nécessaire sur le serveur
+   → Seulement le CONTENU de admin-dist/ doit être uploadé dans admin/
+
+❌ admin-dist/ (dossier BUILD - ne pas uploader le dossier lui-même)
+   → Uploader seulement son CONTENU dans admin/ sur le serveur
+
+❌ game-app/ (nécessite Node.js - à déployer sur Vercel ou VPS)
+❌ docs/ (documentation - pas nécessaire sur le serveur)
+❌ sql/ (scripts SQL - pas nécessaire sur le serveur)
+❌ node_modules/ (dépendances - jamais uploader)
+❌ .env.local (variables d'environnement - ne jamais uploader)
+❌ build-admin.sh (script local - pas nécessaire sur le serveur)
+❌ .git/ (dossier Git - jamais uploader)
+
+📋 CHECKLIST UPLOAD
+-------------------
+[ ] .htaccess (à la racine)
+[ ] Tous les fichiers .html
+[ ] Tous les fichiers .js et .css
+[ ] manifest.json
+[ ] sw.js
+[ ] attached_assets/ (dossier complet)
+[ ] admin/ (créer le dossier)
+[ ] admin/index.html (de admin-dist/index.html)
+[ ] admin/assets/ (de admin-dist/assets/)
+[ ] admin/vite.svg (de admin-dist/vite.svg)
+
+📖 GUIDES
+---------
+- README_UPLOAD.md : Guide d'upload complet
+- UPLOAD_READY.md : Structure prête pour upload
+- admin/GUIDE_DEPLOIEMENT_FINAL.md : Dépannage dashboard
+
+⚠️ IMPORTANT
+------------
+1. Builder le dashboard AVANT upload : ./build-admin.sh
+2. Uploader le CONTENU de admin-dist/ dans admin/ (pas le dossier lui-même)
+3. Structure finale : public_html/admin/index.html
+4. .htaccess doit être à la racine avec les règles pour /admin

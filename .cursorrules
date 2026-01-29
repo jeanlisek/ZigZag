@@ -1,0 +1,40 @@
+# .cursorrules – Zigzag Project (sommaire)
+
+## Principes généraux
+- Répondre en français, concis, sans jargon inutile.
+- Demander confirmation avant toute action destructrice.
+- Citer les sources web si utilisées.
+
+## Nom du projet
+- **Orthographe officielle** : `ZigZag` (Z majuscule, i minuscule, g minuscule, Z majuscule, a minuscule, g minuscule)
+- **TOUJOURS** utiliser `ZigZag` dans les textes visibles par l'utilisateur (titres, copyright, descriptions)
+- Exception : URLs, noms de dossiers/fichiers, variables de code peuvent utiliser `zigzag` en minuscules
+- Vérifier et corriger toutes les occurrences de "Zigzag" (avec z minuscule) dans les fichiers HTML, titres, et textes utilisateur
+
+## Où trouver les règles détaillées
+- Frontend : `docs/rules-frontend.md`
+- Backend (Python) : `docs/rules-backend.md`
+- Supabase & MCP : `docs/rules-supabase.md`
+- Sécurité & données : `docs/rules-security.md`
+- Workflow & tests : `docs/rules-workflow.md`
+- Changelog : `docs/RULES_CHANGELOG.md` (suivi des modifications)
+
+## Système de suivi des règles
+- **CONSULTER** systématiquement les règles avant chaque action
+- **PROPOSER** automatiquement des mises à jour après chaque changement significatif
+- **DOCUMENTER** tous les changements dans `docs/RULES_CHANGELOG.md`
+- Chaque fichier de règles contient une section "Changements récents" pointant vers le changelog
+
+## Rappels critiques (à garder ici)
+- Secrets : ne jamais exposer de clés privées (`service_role`). Clé anon uniquement côté client.
+- Supabase MCP : `https://mcp.supabase.com/mcp?project_ref=tihrltssmpxpreadpzqm`. Toujours respecter le RLS ; éviter `select *` sur tables sensibles.
+- Admin : credentials à externaliser (env), session 24h max, vérifier la session avant action.
+- Actions destructrices : toujours demander validation explicite.
+- ASCII par défaut ; pas de suppression/écrasement sans confirmation.
+
+## Synchronisation SQL obligatoire
+- **TOUJOURS** mettre à jour les fichiers dans `Zig-Zag/sql/` quand des modifications impactent la base de données.
+- Si création/modification de tables, colonnes, index, policies RLS, triggers : mettre à jour `01_complete_schema.sql`.
+- Si modification directe dans Supabase : créer un fichier de migration numéroté (ex: `06_nom_migration.sql`) et mettre à jour `01_complete_schema.sql`.
+- Après chaque modification SQL : vérifier la synchronisation avec `05_sync_policies_and_indexes.sql` si nécessaire.
+- Les fichiers SQL doivent toujours refléter l'état actuel de la base Supabase.

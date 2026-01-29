@@ -1,0 +1,72 @@
+📤 CE QUI DOIT ÊTRE UPLOADÉ SUR HOSTINGER
+=========================================
+
+✅ À UPLOADER
+-------------
+
+1. Fichiers à la racine :
+   - .htaccess
+   - index.html
+   - jouer.html
+   - contact.html
+   - mentions-legales.html
+   - presse.html
+   - oauth-callback.html
+   - 404.html
+   - 500.html
+   - style.css
+   - script.js
+   - chatbot.css
+   - chatbot.js
+   - cookies.css
+   - cookies.js
+   - i18n.js
+   - sw.js
+   - manifest.json
+
+2. Dossier attached_assets/ (complet)
+
+3. Dashboard (IMPORTANT) :
+   - Créer le dossier admin/ sur le serveur
+   - Uploader le CONTENU de admin-dist/ dans admin/
+   - (index.html, assets/, vite.svg)
+
+❌ À NE PAS UPLOADER
+--------------------
+
+❌ admin/ (dossier source - contient le code React, node_modules, etc.)
+   → C'est le code source, pas nécessaire sur le serveur
+
+❌ admin-dist/ (dossier build - uploader son CONTENU seulement)
+   → Ne pas uploader le dossier lui-même, mais son contenu dans admin/
+
+❌ game-app/ (application Next.js)
+   → Déployée séparément sur Vercel
+
+❌ node_modules/ (dépendances)
+   → Jamais uploader
+
+❌ .git/ (dossier Git)
+   → Jamais uploader
+
+❌ docs/ (documentation)
+   → Pas nécessaire sur le serveur
+
+❌ sql/ (scripts SQL)
+   → Pas nécessaire sur le serveur
+
+❌ build-admin.sh (script local)
+   → Pas nécessaire sur le serveur
+
+📋 RÉSUMÉ
+---------
+
+✅ Uploader : Fichiers du site + contenu de admin-dist/ dans admin/
+❌ Ne PAS uploader : admin/ (source), admin-dist/ (dossier), node_modules, etc.
+
+🎯 ANALOGIE
+-----------
+
+- admin/ = Cuisine (où vous cuisinez) → Ne pas envoyer la cuisine
+- admin-dist/ = Plat cuisiné → Envoyer le plat (contenu) dans une assiette (admin/ sur le serveur)
+

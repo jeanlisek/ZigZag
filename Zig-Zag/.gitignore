@@ -1,0 +1,24 @@
+# Build output du dashboard admin
+admin-dist/
+
+# Dépendances Node.js
+node_modules/
+package-lock.json
+
+# Build Next.js
+.next/
+out/
+
+# Fichiers système
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Fichiers temporaires
+.cache/
+.temp/
+

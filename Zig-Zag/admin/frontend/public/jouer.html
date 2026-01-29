@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription & Connexion - Zigzag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="icon" type="image/png" href="../assets/image_1763569221576.png">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #40C4D4 0%, #F54291 50%, #FF912D 100%);
+        }
+
+        .auth-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #2C2A35;
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: rgba(44, 42, 53, 0.7);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2C2A35;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #FF912D;
+            box-shadow: 0 0 0 3px rgba(255, 145, 45, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #BDBDBD;
+        }
+
+        .profile-upload {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .profile-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF912D, #F54291);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            margin: 0 auto 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .profile-preview:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-preview img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-upload input[type="file"] {
+            display: none;
+        }
+
+        .profile-upload label {
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .optional-badge {
+            font-size: 11px;
+            color: #FF912D;
+            font-weight: 600;
+        }
+
+        .form-remember {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
+
+        .form-remember input[type="checkbox"] {
+            margin-right: 6px;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #FF912D, #F54291);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 145, 45, 0.2);
+        }
+
+        @media (max-width: 900px) {
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .auth-card {
+                padding: 30px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 15px;
+            }
+
+            .auth-card {
+                padding: 25px 15px;
+            }
+
+            .auth-header h1 {
+                font-size: 20px;
+            }
+
+            .form-group input {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <!-- Client Supabase (UMD) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <!-- SIGNUP CARD -->
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Créer un compte</h1>
+                    <p>Rejoignez Zigzag !</p>
+                </div>
+                <form id="signupForm">
+                    <div class="profile-upload">
+                        <label>Photo de Profil <span class="optional-badge">(Optionnel)</span></label>
+                        <div class="profile-preview" onclick="document.getElementById('profileImage').click()">
+                            <span>+ Photo</span>
+                        </div>
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" name="email" placeholder="exemple@zig-zag.fun" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayName">Pseudo</label>
+                        <input type="text" id="displayName" name="displayName" placeholder="ChaosPlayer42" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword">Mot de passe</label>
+                        <input type="password" id="signupPassword" name="password" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Créer mon compte</button>
+                </form>
+            </div>
+
+            <!-- LOGIN CARD -->
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Se connecter</h1>
+                    <p>Bienvenue !</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="exemple@zig-zag.fun" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-remember">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Se souvenir de moi</label>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Se connecter</button>
+
+                    <div style="text-align: center; margin-top: 12px;">
+                        <a href="#" style="color: #FF912D; font-size: 13px; text-decoration: none; font-weight: 600;">Mot de passe oublié ?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Prévisualisation de la photo de profil (aucun upload côté Supabase pour l'instant)
+        const profilePreview = document.querySelector('.profile-preview');
+        const profileInput = document.getElementById('profileImage');
+
+        if (profileInput && profilePreview) {
+            profileInput.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profilePreview.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Configuration Supabase (même projet que sur index.html)
+        const SUPABASE_URL = "https://tihrltssmpxpreadpzqm.supabase.co";
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaHJsdHNzbXB4cHJlYWRwenFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNjEwNDksImV4cCI6MjA3OTczNzA0OX0.lXbPKA8tYj7o582onzj8c9y1vhkdXrk5SN8WmIahJpY";
+
+        // Client global Supabase (UMD → objet global "supabase")
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const signupForm = document.getElementById('signupForm');
+        const loginForm = document.getElementById('loginForm');
+
+        const signupEmailInput = document.getElementById('signupEmail');
+        const displayNameInput = document.getElementById('displayName');
+        const signupPasswordInput = document.getElementById('signupPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        const loginEmailInput = document.getElementById('loginEmail');
+        const loginPasswordInput = document.getElementById('loginPassword');
+
+        // Gestion de l'inscription avec Supabase Auth
+        if (signupForm && signupEmailInput && displayNameInput && signupPasswordInput && confirmPasswordInput) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = signupEmailInput.value.trim();
+                const username = displayNameInput.value.trim();
+                const password = signupPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (!email || !username || !password || !confirmPassword) {
+                    alert("Merci de remplir tous les champs.");
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    alert('Les mots de passe ne correspondent pas');
+                    return;
+                }
+
+                try {
+                    // On envoie le pseudo dans les metadata → utilisé par la fonction handle_new_user()
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                username: username
+                                // avatar_url: pourra être rempli plus tard si tu ajoutes un upload vers Supabase Storage
+                            }
+                        }
+                    });
+
+                    if (error) {
+                        console.error(error);
+                        alert("Erreur lors de la création du compte : " + error.message);
+                        return;
+                    }
+
+                    // Selon la config Supabase, l'email de confirmation peut être requis
+                    alert("Compte créé avec succès ! Vérifie tes emails pour confirmer ton compte, puis reviens te connecter sur Zigzag 🎉");
+                    window.location.href = 'index.html';
+                } catch (err) {
+                    console.error(err);
+                    alert("Une erreur inattendue est survenue lors de l'inscription.");
+                }
+            });
+        }
+
+        // Gestion de la connexion avec Supabase Auth
+        if (loginForm && loginEmailInput && loginPasswordInput) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = loginEmailInput.value.trim();
+                const password = loginPasswordInput.value;
+
+                if (!email || !password) {
+                    alert("Merci de renseigner votre email et votre mot de passe.");
+                    return;
+                }
+
+                try {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) {
+                        console.error(error);
+                        alert("Erreur lors de la connexion : " + error.message);
+                        return;
+                    }
+
+                    alert('Connecté avec succès ! Bienvenue sur Zigzag 🎉');
+                    window.location.href = 'index.html';
+                } catch (err) {
+                    console.error(err);
+                    alert("Une erreur inattendue est survenue lors de la connexion.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

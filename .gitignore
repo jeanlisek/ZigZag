@@ -1,0 +1,6 @@
+# Fichiers système
+.DS_Store
+
+# Fichiers trop volumineux pour GitHub (limite 100 MB)
+Zig-Zag/game-app.zip
+game-app.zip

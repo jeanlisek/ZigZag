@@ -1,0 +1,293 @@
+/* Bannière de consentement aux cookies RGPD - Adapté au thème violet ZigZag */
+.cookies-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(45, 27, 78, 0.95) 0%, rgba(75, 65, 126, 0.9) 100%);
+    color: #FFFFFF;
+    padding: 20px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(75, 65, 126, 0.3);
+    z-index: 10000;
+    display: none !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.cookies-banner.show {
+    display: block !important;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.cookies-banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cookies-banner-text {
+    flex: 1;
+    min-width: 250px;
+}
+
+.cookies-banner-text p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.cookies-banner-text a {
+    color: #ff912d; /* Orange ZigZag */
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.cookies-banner-text a:hover {
+    color: #f54291; /* Rose ZigZag */
+}
+
+.cookies-banner-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cookies-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Roboto', sans-serif;
+    white-space: nowrap;
+}
+
+.cookies-btn-accept {
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 100%);
+    color: white;
+}
+
+.cookies-btn-accept:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 66, 145, 0.4);
+}
+
+.cookies-btn-decline {
+    background: rgba(75, 65, 126, 0.3); /* Violet brand avec transparence */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.cookies-btn-decline:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.cookies-btn-settings {
+    background: rgba(75, 65, 126, 0.2); /* Violet brand très transparent */
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 13px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.cookies-btn-settings:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+/* Panneau de paramètres des cookies - Adapté au thème violet ZigZag */
+.cookies-settings {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(45, 27, 78, 0.98) 0%, rgba(75, 65, 126, 0.95) 100%);
+    color: #FFFFFF;
+    padding: 30px 20px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(75, 65, 126, 0.3);
+    z-index: 10001;
+    display: none !important;
+    max-height: 80vh;
+    overflow-y: auto;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.cookies-settings.show {
+    display: block !important;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.cookies-settings-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cookies-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.cookies-settings-header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    color: white;
+}
+
+.cookies-settings-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(75, 65, 126, 0.3); /* Violet brand avec transparence */
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.cookies-settings-close:hover {
+    background: rgba(75, 65, 126, 0.5); /* Violet plus opaque au survol */
+    border-color: rgba(245, 66, 145, 0.4);
+    transform: rotate(90deg);
+    box-shadow: 0 2px 8px rgba(245, 66, 145, 0.3);
+}
+
+.cookie-category {
+    background: rgba(75, 65, 126, 0.3); /* Violet brand avec transparence */
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.cookie-category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cookie-category-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    color: white;
+}
+
+.cookie-toggle {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cookie-toggle.active {
+    background: linear-gradient(135deg, #F54291 0%, #FF912D 100%);
+}
+
+.cookie-toggle-slider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cookie-toggle.active .cookie-toggle-slider {
+    transform: translateX(24px);
+}
+
+.cookie-category p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.cookies-settings-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cookies-banner-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cookies-banner-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .cookies-btn {
+        flex: 1;
+    }
+
+    .cookies-settings {
+        padding: 20px 15px;
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+{
+  "name": "ZigZag - Le jeu qui déforme vos messages",
+  "short_name": "ZigZag",
+  "description": "Jouez en ligne gratuitement ! Lancez une phrase, un dessin ou un message vocal. Découvrez le dessin hilarant qui en résulte après un tour du monde en 7 étapes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#40C4D4",
+  "theme_color": "#F54291",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "fr",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "attached_assets/image_1763569221576.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "attached_assets/image_1763569221576.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment", "social"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Jouer",
+      "short_name": "Jouer",
+      "description": "Lancer une partie de ZigZag",
+      "url": "/jouer",
+      "icons": [
+        {
+          "src": "attached_assets/image_1763569221576.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+# Configuration .htaccess MINIMALE pour Next.js
+# Version ultra-simplifiée pour éviter les erreurs 500
+
+RewriteEngine On
+
+# Types MIME - VERSION MINIMALE
+AddType application/javascript .js
+AddType text/css .css
+
+# Headers - VERSION MINIMALE (seulement si mod_headers est disponible)
+<IfModule mod_headers.c>
+    <FilesMatch "\.js$">
+        Header set Content-Type "application/javascript"
+    </FilesMatch>
+    <FilesMatch "\.css$">
+        Header set Content-Type "text/css"
+    </FilesMatch>
+</IfModule>
+
+# Routing Next.js - VERSION MINIMALE
+RewriteCond %{REQUEST_URI} ^/_next/
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [L]
+

@@ -1,0 +1,6 @@
+# Version ULTRA-MINIMALE - Aucune directive complexe
+# Si cette version cause encore une erreur 500, le problème vient de la configuration Apache
+
+AddType application/javascript .js
+AddType text/css .css
+

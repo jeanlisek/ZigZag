@@ -1,0 +1,430 @@
+/* Waiting Screen - Interface d'attente moderne */
+.waiting-screen {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.waiting-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+/* Header avec animation */
+.waiting-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.waiting-icon-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.waiting-icon {
+  font-size: 64px;
+  display: inline-block;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.waiting-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-radius: 50%;
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+.waiting-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2C2A35;
+  margin-bottom: 12px;
+}
+
+.waiting-subtitle {
+  font-size: 1.1rem;
+  color: #667eea;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Section de progression */
+.waiting-progress-section {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-label {
+  font-weight: 600;
+  color: #2C2A35;
+  font-size: 0.95rem;
+}
+
+.progress-percentage {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.progress-bar-container {
+  height: 12px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  transition: width 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Section preview */
+.waiting-preview-section {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.preview-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2C2A35;
+  margin-bottom: 16px;
+}
+
+.preview-content {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.preview-drawing img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  display: block;
+  margin: 0 auto;
+}
+
+.preview-text {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #2C2A35;
+  font-style: italic;
+  padding: 20px;
+}
+
+.preview-audio {
+  display: flex;
+  justify-content: center;
+}
+
+.preview-audio audio {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Section joueurs */
+.waiting-players-section {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.players-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2C2A35;
+  margin-bottom: 16px;
+}
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.player-item.current-turn {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border: 2px solid #667eea;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+  }
+}
+
+.player-item.inactive {
+  opacity: 0.5;
+}
+
+.player-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.player-turn-indicator {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  border: 2px solid white;
+  animation: pulse-indicator 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-indicator {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.player-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.player-name {
+  font-weight: 600;
+  color: #2C2A35;
+  font-size: 0.95rem;
+}
+
+.player-status {
+  font-size: 0.85rem;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.player-status.offline {
+  color: #999;
+}
+
+/* Info temps */
+.waiting-time-info {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.time-badge {
+  background: white;
+  padding: 12px 20px;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.time-icon {
+  font-size: 1.1rem;
+}
+
+/* Conseils */
+.waiting-tips {
+  margin-bottom: 24px;
+}
+
+.tip-card {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+  border-left: 4px solid #FFC107;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: #2C2A35;
+  line-height: 1.5;
+}
+
+/* Actions */
+.waiting-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-secondary-outline {
+  padding: 12px 24px;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary-outline:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .waiting-screen {
+    padding: 16px;
+  }
+
+  .waiting-title {
+    font-size: 1.5rem;
+  }
+
+  .waiting-subtitle {
+    font-size: 1rem;
+  }
+
+  .waiting-icon {
+    font-size: 48px;
+  }
+
+  .waiting-progress-section,
+  .waiting-preview-section,
+  .waiting-players-section {
+    padding: 20px;
+  }
+
+  .player-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .tip-card {
+    font-size: 0.9rem;
+    padding: 14px;
+  }
+}

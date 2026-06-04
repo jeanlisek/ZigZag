@@ -1,0 +1,199 @@
+# Configuration .htaccess pour Next.js sur game.zig-zag.fun
+# À placer à la racine du sous-domaine game.zig-zag.fun
+
+RewriteEngine On
+# PAS de RewriteBase /jeu/ car on est à la racine du sous-domaine
+
+# ============================================
+# TYPES MIME - CORRIGER LES ERREURS MIME TYPE
+# PRIORITÉ ABSOLUE : Doit être EN PREMIER
+# ============================================
+<IfModule mod_mime.c>
+    # JavaScript - CRITIQUE pour Next.js
+    # Définir plusieurs fois pour forcer le bon type
+    AddType application/javascript .js .mjs
+    AddType text/javascript .js
+    
+    # CSS - CRITIQUE pour Next.js
+    # Forcer explicitement text/css
+    AddType text/css .css
+    
+    # JSON
+    AddType application/json .json
+    
+    # Fonts
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    
+    # Images
+    AddType image/svg+xml .svg
+    AddType image/png .png
+    AddType image/jpeg .jpg .jpeg
+    AddType image/gif .gif
+    AddType image/webp .webp
+    AddType image/avif .avif
+    AddType image/x-icon .ico
+    
+    # Autres
+    AddType text/html .html
+    AddType text/plain .txt
+    AddType application/xml .xml
+</IfModule>
+
+# ============================================
+# HEADERS POUR FORCER LES TYPES MIME
+# CRITIQUE : Force les bons types MIME même si le serveur les ignore
+# Ces règles s'appliquent à TOUS les fichiers, y compris dans _next/
+# ============================================
+<IfModule mod_headers.c>
+    # PRIORITÉ 0 : DÉSACTIVER X-Content-Type-Options pour TOUS les fichiers _next/
+    # CRITIQUE : Doit être AVANT les autres règles pour éviter le blocage nosniff
+    # Cette règle globale désactive nosniff pour tous les assets Next.js
+    <LocationMatch "^/_next/">
+        Header always unset X-Content-Type-Options
+    </LocationMatch>
+    
+    # PRIORITÉ 1 : Règle SPÉCIFIQUE pour _next/static/chunks/ (chunks Next.js)
+    # Cette règle est appliquée EN PREMIER pour les chunks JavaScript
+    <LocationMatch "^/_next/static/chunks/.*\.js$">
+        Header always unset X-Content-Type-Options
+        Header always set Content-Type "application/javascript; charset=utf-8"
+    </LocationMatch>
+    
+    # PRIORITÉ 2 : Règle SPÉCIFIQUE pour _next/static/ (tous les assets Next.js)
+    <LocationMatch "^/_next/static/.*\.js$">
+        Header always unset X-Content-Type-Options
+        Header always set Content-Type "application/javascript; charset=utf-8"
+    </LocationMatch>
+    
+    <LocationMatch "^/_next/static/.*\.css$">
+        Header always unset X-Content-Type-Options
+        Header always set Content-Type "text/css; charset=utf-8"
+    </LocationMatch>
+    
+    # PRIORITÉ 3 : Forcer le bon type MIME pour TOUS les fichiers JS (fallback global)
+    # Cette règle s'applique à tous les .js, y compris dans _next/static/chunks/
+    <FilesMatch "\.js$">
+        Header always set Content-Type "application/javascript; charset=utf-8"
+    </FilesMatch>
+    
+    # PRIORITÉ 4 : Forcer le bon type MIME pour TOUS les fichiers CSS (fallback global)
+    # Cette règle s'applique à tous les .css, y compris dans _next/static/chunks/
+    <FilesMatch "\.css$">
+        Header always set Content-Type "text/css; charset=utf-8"
+    </FilesMatch>
+    
+    # PRIORITÉ 5 : Forcer le bon type MIME pour les fichiers JSON
+    <FilesMatch "\.json$">
+        Header always set Content-Type "application/json; charset=utf-8"
+    </FilesMatch>
+    
+    # Service Worker doit être servi avec le bon Content-Type
+    <FilesMatch "sw\.js$">
+        Header always set Content-Type "application/javascript; charset=utf-8"
+        Header always set Service-Worker-Allowed "/"
+    </FilesMatch>
+    
+    # Manifest doit être accessible
+    <FilesMatch "manifest\.json$">
+        Header always set Content-Type "application/manifest+json; charset=utf-8"
+    </FilesMatch>
+    
+    # Favicon
+    <FilesMatch "favicon\.ico$">
+        Header always set Content-Type "image/x-icon"
+    </FilesMatch>
+    
+    # CORS pour les ressources Next.js (si nécessaire)
+    <FilesMatch "\.(js|css|json|woff|woff2|ttf|otf|svg|png|jpg|jpeg|gif|webp|ico)$">
+        Header always set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
+# ============================================
+# ROUTING NEXT.JS - SPA (Single Page App)
+# ============================================
+# PRIORITÉ 1 : Rediriger favicon.ico vers le logo
+RewriteCond %{REQUEST_URI} ^/favicon\.ico$
+RewriteRule ^favicon\.ico$ /assets/logo.png [L,R=301]
+
+# PRIORITÉ 2 : Ne JAMAIS toucher aux fichiers _next/ (assets Next.js)
+# Cette règle doit être EN PREMIER, avant toute autre vérification
+RewriteCond %{REQUEST_URI} ^/_next/
+RewriteRule ^ - [L]
+
+# PRIORITÉ 2 : Ne pas réécrire les fichiers existants (images, CSS, JS, etc.)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# PRIORITÉ 3 : Ne pas réécrire les dossiers existants
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# PRIORITÉ 4 : Rediriger toutes les autres routes vers index.html pour le routing côté client
+# MAIS seulement si ce n'est pas un fichier _next/ et que le fichier n'existe pas
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/_next/
+RewriteRule ^(.*)$ index.html [L]
+
+# ============================================
+# COMPRESSION GZIP
+# ============================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ============================================
+# CACHE DES FICHIERS STATIQUES
+# ============================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    
+    # CSS et JS
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML (pas de cache pour les pages)
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# ============================================
+# SÉCURITÉ
+# ============================================
+# Empêcher l'accès aux fichiers sensibles
+<FilesMatch "^(\.env|\.git|package\.json|package-lock\.json|tsconfig\.json|next\.config\.js)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ============================================
+# GESTION DES ERREURS
+# ============================================
+# Rediriger les erreurs 404 vers index.html (pour le routing Next.js)
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html

@@ -1,0 +1,462 @@
+/* Timer Component Styles */
+.timer-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #40C4D4 0%, #3AA8B6 100%);
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(64, 196, 212, 0.4);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.timer-icon {
+  font-size: 24px;
+}
+
+.timer-display {
+  font-family: 'Poppins', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  min-width: 80px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* État d'alerte (< 10 secondes) */
+.timer-container.timer-alert {
+  background: linear-gradient(135deg, #FF912D 0%, #E67D1A 100%);
+  box-shadow: 0 4px 20px rgba(255, 145, 45, 0.5);
+  animation: timer-shake 0.5s ease-in-out infinite;
+}
+
+/* État critique (< 5 secondes) */
+.timer-container.timer-critical {
+  background: linear-gradient(135deg, #F54291 0%, #D13A7D 100%);
+  box-shadow: 0 4px 20px rgba(245, 66, 145, 0.6);
+  animation: timer-shake 0.3s ease-in-out infinite;
+}
+
+/* Pulse effect */
+.timer-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  background: inherit;
+  opacity: 0;
+  animation: pulse 1s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes timer-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timer-container {
+    top: 80px;
+    right: 10px;
+    padding: 8px 16px;
+  }
+  
+  .timer-icon {
+    font-size: 20px;
+  }
+  
+  .timer-display {
+    font-size: 22px;
+    min-width: 60px;
+  }
+}
+
+/* Alternative: Timer in header style */
+.timer-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(64, 196, 212, 0.2);
+  border: 2px solid #40C4D4;
+  border-radius: 20px;
+  margin-left: 15px;
+}
+
+.timer-inline .timer-display {
+  font-size: 18px;
+  color: #40C4D4;
+}
+
+.timer-inline.timer-alert {
+  background: rgba(255, 145, 45, 0.2);
+  border-color: #FF912D;
+}
+
+.timer-inline.timer-alert .timer-display {
+  color: #FF912D;
+}
+
+.timer-inline.timer-critical {
+  background: rgba(245, 66, 145, 0.2);
+  border-color: #F54291;
+}
+
+.timer-inline.timer-critical .timer-display {
+  color: #F54291;
+}
+
+/* ============================================
+   Input Header Styles (pour TextInput, DrawingCanvas, AudioRecorder)
+   ============================================ */
+
+.input-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(64, 196, 212, 0.1) 0%, rgba(58, 168, 182, 0.1) 100%);
+  border-radius: 12px;
+  border-left: 4px solid #40C4D4;
+}
+
+.input-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2D3748;
+  margin: 0 0 8px 0;
+}
+
+.input-subtitle {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #718096;
+  margin: 0;
+}
+
+/* Text Input Container Styles */
+.text-input-container {
+  position: relative;
+}
+
+.text-input {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #40C4D4;
+  box-shadow: 0 0 0 3px rgba(64, 196, 212, 0.2);
+}
+
+.text-input::placeholder {
+  color: #A0AEC0;
+}
+
+.character-count {
+  text-align: right;
+  font-size: 12px;
+  color: #718096;
+  margin-top: 8px;
+}
+
+/* Drawing Canvas Container Styles */
+.drawing-canvas-container {
+  position: relative;
+}
+
+.drawing-canvas {
+  width: 100%;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.drawing-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+  padding: 15px;
+  background: #F7FAFC;
+  border-radius: 12px;
+  align-items: center;
+}
+
+.tool-group {
+  display: flex;
+  gap: 8px;
+}
+
+.tool-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #E2E8F0;
+  border-radius: 8px;
+  background: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+  border-color: #40C4D4;
+  transform: translateY(-2px);
+}
+
+.tool-btn.active {
+  border-color: #40C4D4;
+  background: rgba(64, 196, 212, 0.1);
+  box-shadow: 0 2px 8px rgba(64, 196, 212, 0.3);
+}
+
+.color-group {
+  display: flex;
+  gap: 6px;
+}
+
+.color-btn {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #E2E8F0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.color-btn:hover {
+  transform: scale(1.15);
+}
+
+.color-btn.active {
+  border-color: #2D3748;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #40C4D4;
+}
+
+.brush-size-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #4A5568;
+}
+
+.brush-size-group input[type="range"] {
+  width: 80px;
+  accent-color: #40C4D4;
+}
+
+.btn-clear {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #F54291 0%, #D13A7D 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.btn-clear:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 66, 145, 0.4);
+}
+
+/* Audio Recorder Container Styles */
+.audio-recorder-container {
+  position: relative;
+  text-align: center;
+  padding: 20px;
+}
+
+.recorder-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.btn-record {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #40C4D4 0%, #3AA8B6 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(64, 196, 212, 0.4);
+}
+
+.btn-record:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(64, 196, 212, 0.5);
+}
+
+.btn-stop-record {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #F54291 0%, #D13A7D 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(245, 66, 145, 0.4);
+  animation: pulse-record 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-record {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(245, 66, 145, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(245, 66, 145, 0.7);
+  }
+}
+
+.btn-stop-record:hover {
+  transform: translateY(-3px);
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #F54291;
+  font-weight: 600;
+}
+
+.recording-dot {
+  width: 12px;
+  height: 12px;
+  background: #F54291;
+  border-radius: 50%;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.audio-playback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.audio-player {
+  width: 100%;
+  max-width: 400px;
+}
+
+.btn-reset {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #FF912D 0%, #E67D1A 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 145, 45, 0.4);
+}
+
+.recorder-hint {
+  font-size: 13px;
+  color: #718096;
+  margin-top: 15px;
+}
+
+.error-message {
+  background: rgba(245, 66, 145, 0.1);
+  border: 1px solid #F54291;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  color: #D13A7D;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .input-header {
+    padding: 12px;
+  }
+  
+  .input-title {
+    font-size: 18px;
+  }
+  
+  .drawing-tools {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .color-group {
+    justify-content: center;
+  }
+  
+  .brush-size-group {
+    justify-content: center;
+  }
+  
+  .btn-clear {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+

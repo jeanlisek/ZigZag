@@ -1,0 +1,221 @@
+/* Doodle Canvas - Canvas de gribouillage libre */
+.doodle-canvas-container {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.doodle-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.doodle-header h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2C2A35;
+  margin-bottom: 6px;
+}
+
+.doodle-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Canvas wrapper */
+.doodle-canvas-wrapper {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 2px dashed #e0e0e0;
+  transition: border-color 0.3s;
+}
+
+.doodle-canvas-wrapper:hover {
+  border-color: #667eea;
+}
+
+.doodle-canvas {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  background: white;
+  cursor: crosshair;
+  touch-action: none;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Controls */
+.doodle-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* Couleurs */
+.doodle-colors {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.doodle-color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.doodle-color-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.doodle-color-btn.active {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px #667eea, 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Brush size */
+.doodle-brush-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.doodle-brush-size label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  white-space: nowrap;
+}
+
+.doodle-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #e0e0e0;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.doodle-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.doodle-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.doodle-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.doodle-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+.brush-size-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #667eea;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Clear button */
+.doodle-clear-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #FF6B6B, #FF1744);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  white-space: nowrap;
+}
+
+.doodle-clear-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.doodle-clear-btn:active {
+  transform: translateY(0);
+}
+
+/* Note */
+.doodle-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #999;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .doodle-canvas-container {
+    padding: 16px;
+  }
+
+  .doodle-canvas {
+    height: 250px;
+  }
+
+  .doodle-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .doodle-colors {
+    justify-content: center;
+  }
+
+  .doodle-color-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .doodle-brush-size {
+    width: 100%;
+  }
+
+  .doodle-clear-btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,281 @@
+/* Overlay du Color Picker */
+.color-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Panneau principal */
+.color-picker-panel {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.color-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.color-picker-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2C2A35;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: #f0f0f0;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #666;
+}
+
+.close-btn:hover {
+  background: #e0e0e0;
+  transform: scale(1.1);
+  color: #333;
+}
+
+/* Contenu */
+.color-picker-content {
+  padding: 20px;
+}
+
+/* Sélecteur principal */
+.color-picker-main {
+  margin-bottom: 20px;
+}
+
+/* Style pour react-colorful */
+.color-picker-main .react-colorful {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.color-picker-main .react-colorful__saturation {
+  border-radius: 12px 12px 0 0;
+}
+
+.color-picker-main .react-colorful__last-control {
+  border-radius: 0 0 12px 12px;
+}
+
+.color-picker-main .react-colorful__pointer {
+  width: 24px;
+  height: 24px;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Outils */
+.color-picker-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.color-preview-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.color-preview-large {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  border: 3px solid #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.eyedropper-btn {
+  flex: 1;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.eyedropper-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.eyedropper-btn:active {
+  transform: translateY(0);
+}
+
+/* Inputs */
+.color-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.color-input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.color-input-group input {
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: 'Courier New', monospace;
+  transition: all 0.2s;
+}
+
+.color-input-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* RGB Inputs */
+.rgb-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.rgb-inputs input {
+  text-align: center;
+}
+
+/* Sections de couleurs */
+.preset-colors-section,
+.recent-colors-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.preset-colors-section h4,
+.recent-colors-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preset-colors-grid,
+.recent-colors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  gap: 8px;
+}
+
+.preset-color-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.preset-color-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.preset-color-btn.active {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px #667eea, 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .color-picker-panel {
+    max-width: 100%;
+    margin: 10px;
+    max-height: 95vh;
+  }
+
+  .color-picker-header {
+    padding: 15px;
+  }
+
+  .color-picker-content {
+    padding: 15px;
+  }
+
+  .color-picker-main .react-colorful {
+    height: 180px;
+  }
+
+  .preset-colors-grid,
+  .recent-colors-grid {
+    grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+    gap: 6px;
+  }
+
+  .preset-color-btn {
+    width: 32px;
+    height: 32px;
+  }
+}
